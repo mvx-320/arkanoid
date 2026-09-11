@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ccfwg1gqrbnow"]
+
+[ext_resource type="Texture2D" uid="uid://5gr7txkibxjp" path="res://icon.svg" id="1_7u4ml"]
+[ext_resource type="Script" uid="uid://0jd8bw04jc52" path="res://Code/RotatingSprite.cs" id="2_16p8j"]
+
+[node name="Node2D" type="Node2D" unique_id=1759358474]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1937267033]
+texture = ExtResource("1_7u4ml")
+script = ExtResource("2_16p8j")
