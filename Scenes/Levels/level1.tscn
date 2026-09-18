@@ -1,10 +1,14 @@
 [gd_scene format=3 uid="uid://ccfwg1gqrbnow"]
 
-[ext_resource type="Texture2D" uid="uid://5gr7txkibxjp" path="res://icon.svg" id="1_7u4ml"]
-[ext_resource type="Script" uid="uid://0jd8bw04jc52" path="res://Code/RotatingSprite.cs" id="2_16p8j"]
+[ext_resource type="PackedScene" uid="uid://c2p6a6wv3so3g" path="res://Scenes/Characters/Paddle.tscn" id="2_0xrym"]
+[ext_resource type="PackedScene" uid="uid://gcc4hahbxpxn" path="res://Scenes/Ball.tscn" id="2_16p8j"]
 
 [node name="Node2D" type="Node2D" unique_id=1759358474]
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1937267033]
-texture = ExtResource("1_7u4ml")
-script = ExtResource("2_16p8j")
+[node name="Paddle" parent="." unique_id=787059618 instance=ExtResource("2_0xrym")]
+position = Vector2(274, 260)
+_paddleSpeed = 100.0
+
+[node name="Ball" parent="." unique_id=1462283923 instance=ExtResource("2_16p8j")]
+position = Vector2(295, 104)
+_speed = 100.0

@@ -2,6 +2,10 @@
 ## Justification on using ...
 ### `StaticBody2D`
 - It provides solid collision detection, while not be influenced by other forces we add later.
+### Wrong
+### `CharacterBody2D`
+- Static is though if it doesn't get moved at all. We want to decide how the Body behaves with a script by user input, therefor use `CharacterBody2D`
+
 ### `CollisionShape2D`
 - The capsule form is simple and closely resembles the shape of the paddle
 - I made the collision shape a little wider than the image so the frustration level decreases.
