@@ -3,9 +3,10 @@ using System;
 
 namespace GA.GameProgramming
 {
-	public partial class Ball : Node2D 
+	public partial class Ball : CharacterBody2D 
 	{
-		[Export] private float _speed = 10;
+        [Export] private Vector2 _direction = new Vector2(0, 1);
+		[Export] private float _speed = 100;
   
         public float Speed
         {
@@ -18,14 +19,11 @@ namespace GA.GameProgramming
         {
             float deltaTime = (float)delta;
 
-            /*
-            float horizontal = Input.GetAxis("Left", "Right");
-            float vertical = Input.GetAxis("Up", "Down");
-            */
-
-            Vector2 input = Input.GetVector("Left", "Right", "Up", "Down");
-
-            Position += input * _speed * deltaTime;
+            var collision = MoveAndCollide(_direction * _speed * deltaTime);
+            if (collision != null)
+            {
+                GD.Print("Collision with: " + ((Node)collision.GetCollider()).Name);
+            }
         }
 
         /// <summary>
