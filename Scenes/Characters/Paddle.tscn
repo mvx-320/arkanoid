@@ -16,8 +16,9 @@ shader_parameter/bottom = 0
 radius = 14.0
 height = 60.0
 
-[node name="Paddle" type="CharacterBody2D" unique_id=787059618]
+[node name="Paddle" type="CharacterBody2D" unique_id=787059618 node_paths=PackedStringArray("_spritePaddle")]
 script = ExtResource("2_g3s6r")
+_spritePaddle = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2136754687]
 material = SubResource("ShaderMaterial_xxgdn")

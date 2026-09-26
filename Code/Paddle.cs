@@ -5,24 +5,45 @@ namespace GA.GameProgramming
 {
 	public partial class Paddle : CharacterBody2D
 	{
-		[Export] private float _paddleSpeed = 10;
-		[Export] private Sprite2D _sprite;
-		private bool _mouseControl = false;
-
 		private enum ControlMode
 		{
 			Mouse,
 			Keyboard
 		}
+		ControlMode _controlMode = ControlMode.Keyboard;
 
-		public Vector2 Size
+		[Export] private float _paddleSpeed = 10;
+		[Export] private Sprite2D _spritePaddle;
+		[Export] private Sprite2D _spriteWallLeft;
+		[Export] private Sprite2D _spriteWallRight;
+
+
+
+		public Vector2 PaddleSize
 		{
 			get
 			{
-				Vector2 size = _sprite.GetRect().Size;
-				return size * _sprite.Scale;
+				Vector2 size = _spritePaddle.GetRect().Size;
+				return size * _spritePaddle.Scale;
 			}
 		}
+		public Vector2 WallLeftSize
+		{
+			get
+			{
+				Vector2 size = _spriteWallLeft.GetRect().Size;
+				return size * _spriteWallLeft.Scale;
+			}
+		}
+		public Vector2 WallRightSize
+		{
+			get
+			{
+				Vector2 size = _spriteWallRight.GetRect().Size;
+				return size * _spriteWallRight.Scale;
+			}
+		}
+
 		public float PaddleSpeed
 		{
 			get { return _paddleSpeed; }
@@ -37,11 +58,11 @@ namespace GA.GameProgramming
 
 			if (Input.IsActionJustPressed("MouseLeft"))
 			{
-				_mouseControl = !_mouseControl;
-				GD.Print($"Mouse control toggled: {_mouseControl}");
+				_controlMode = _controlMode == ControlMode.Keyboard ? ControlMode.Mouse : ControlMode.Keyboard;
+				GD.Print($"Control mode: {_controlMode}");
 			}
 
-			if (_mouseControl)
+			if (_controlMode == ControlMode.Mouse)
 			{
 				Vector2 mousePosViewport = GetViewport().GetMousePosition();
 				float mouseX = mousePosViewport.X;
@@ -72,12 +93,9 @@ namespace GA.GameProgramming
 
 		private float ClampPaddlePosition(float positionX)
 		{
-			// GetNode is not nice to use
-			var collision = GetNode<CollisionShape2D>("CollisionShape2D");
-			var capsule = collision.Shape as CapsuleShape2D;
-			float shapeWidth = capsule.Height; // capsule is rotated 90°C
-
-			return Mathf.Clamp(positionX, 0 + shapeWidth / 2, GetViewportRect().Size.X - shapeWidth / 2);
+			float minX = 0 + PaddleSize.X / 2 + WallLeftSize.X;
+			float maxX = GetViewportRect().Size.X - PaddleSize.X / 2 - WallRightSize.X;
+			return Mathf.Clamp(positionX, minX, maxX);
 		}
 	}
 }

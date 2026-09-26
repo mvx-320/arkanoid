@@ -22,7 +22,18 @@ namespace GA.GameProgramming
             var collision = MoveAndCollide(_direction * _speed * deltaTime);
             if (collision != null)
             {
-                GD.Print("Collision with: " + ((Node)collision.GetCollider()).Name);
+                var colliderName = ((Node)collision.GetCollider()).Name;
+                GD.Print($"Ball collided with: {colliderName}");
+                if (colliderName == "Paddle" || colliderName == "Top")
+                {
+                    GD.Print("Ball hit paddle");
+                    _direction = new Vector2(_direction.X, -_direction.Y);
+                }
+                else if (colliderName == "Right" || colliderName == "Left")
+                {
+                    GD.Print("Ball hit wall");
+                    _direction = new Vector2(-_direction.X, _direction.Y);
+                }
             }
         }
 
