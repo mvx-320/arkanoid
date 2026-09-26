@@ -24,10 +24,11 @@ _paddleSpeed = 150.0
 _spriteWallLeft = NodePath("../Borders/BottomLeft")
 _spriteWallRight = NodePath("../Borders/BottomRight")
 
-[node name="Ball" parent="." unique_id=686962177 instance=ExtResource("3_4d3fe")]
-position = Vector2(311, 173)
+[node name="Ball" parent="." unique_id=686962177 node_paths=PackedStringArray("_paddle") instance=ExtResource("3_4d3fe")]
+position = Vector2(299, 293)
 collision_mask = 6
-_direction = Vector2(1, -1)
+_speed = 150.0
+_paddle = NodePath("../Paddle")
 
 [node name="Borders" type="Node2D" parent="." unique_id=1160430599]
 

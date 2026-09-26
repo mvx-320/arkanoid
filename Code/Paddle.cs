@@ -5,17 +5,17 @@ namespace GA.GameProgramming
 {
 	public partial class Paddle : CharacterBody2D
 	{
+		[Export] private float _paddleSpeed = 10;
+		[Export] private Sprite2D _spritePaddle;
+		[Export] private Sprite2D _spriteWallLeft;
+		[Export] private Sprite2D _spriteWallRight;
+
 		private enum ControlMode
 		{
 			Mouse,
 			Keyboard
 		}
 		ControlMode _controlMode = ControlMode.Keyboard;
-
-		[Export] private float _paddleSpeed = 10;
-		[Export] private Sprite2D _spritePaddle;
-		[Export] private Sprite2D _spriteWallLeft;
-		[Export] private Sprite2D _spriteWallRight;
 
 
 
