@@ -6,8 +6,23 @@ namespace GA.GameProgramming
 	public partial class Paddle : CharacterBody2D
 	{
 		[Export] private float _paddleSpeed = 10;
+		[Export] private Sprite2D _sprite;
 		private bool _mouseControl = false;
 
+		private enum ControlMode
+		{
+			Mouse,
+			Keyboard
+		}
+
+		public Vector2 Size
+		{
+			get
+			{
+				Vector2 size = _sprite.GetRect().Size;
+				return size * _sprite.Scale;
+			}
+		}
 		public float PaddleSpeed
 		{
 			get { return _paddleSpeed; }
@@ -18,6 +33,8 @@ namespace GA.GameProgramming
 		{
 			float deltaTime = (float)delta;
 			
+			// My OS has always the mouse focused on the current window, so the button wouldn't work anymore without that
+
 			if (Input.IsActionJustPressed("MouseLeft"))
 			{
 				_mouseControl = !_mouseControl;
@@ -55,6 +72,7 @@ namespace GA.GameProgramming
 
 		private float ClampPaddlePosition(float positionX)
 		{
+			// GetNode is not nice to use
 			var collision = GetNode<CollisionShape2D>("CollisionShape2D");
 			var capsule = collision.Shape as CapsuleShape2D;
 			float shapeWidth = capsule.Height; // capsule is rotated 90°C

@@ -2,6 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://bab6fd7fhlwph" path="res://Art/32/paddle.png" id="1_r5bw3"]
 [ext_resource type="Script" uid="uid://ck30xr03n2j8c" path="res://Code/Paddle.cs" id="2_g3s6r"]
+[ext_resource type="Shader" uid="uid://dbd84ejhbd5j3" path="res://Shader/NineSliceSprite2D.gdshader" id="2_lyy1j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxgdn"]
+shader = ExtResource("2_lyy1j")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/right = 18
+shader_parameter/top = 18
+shader_parameter/left = 0
+shader_parameter/bottom = 0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e6s6k"]
 radius = 14.0
@@ -11,6 +20,9 @@ height = 60.0
 script = ExtResource("2_g3s6r")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2136754687]
+material = SubResource("ShaderMaterial_xxgdn")
+position = Vector2(0.2500028, 0.50000095)
+scale = Vector2(1.0084745, 1.03125)
 texture = ExtResource("1_r5bw3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1971691771]
