@@ -13,11 +13,14 @@ size = Vector2(32, 296)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_he6jc"]
 size = Vector2(576, 32)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1xqow"]
+size = Vector2(32, 32)
+
 [node name="Node2D" type="Node2D" unique_id=1759358474]
 script = ExtResource("1_xvio3")
 
 [node name="Paddle" parent="." unique_id=787059618 node_paths=PackedStringArray("_spriteWallLeft", "_spriteWallRight") instance=ExtResource("2_0xrym")]
-position = Vector2(300, 334)
+position = Vector2(303, 284)
 collision_layer = 2
 collision_mask = 0
 _paddleSpeed = 150.0
@@ -25,7 +28,7 @@ _spriteWallLeft = NodePath("../Borders/BottomLeft")
 _spriteWallRight = NodePath("../Borders/BottomRight")
 
 [node name="Ball" parent="." unique_id=686962177 node_paths=PackedStringArray("_paddle") instance=ExtResource("3_4d3fe")]
-position = Vector2(299, 293)
+position = Vector2(302, 243)
 collision_mask = 6
 _speed = 150.0
 _paddle = NodePath("../Paddle")
@@ -71,6 +74,18 @@ texture = ExtResource("6_tj5wv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Top" unique_id=375849331]
 position = Vector2(320, 16)
 shape = SubResource("RectangleShape2D_he6jc")
+
+[node name="Bottom" type="StaticBody2D" parent="Borders" unique_id=1015749783]
+position = Vector2(320, 344)
+scale = Vector2(18, 1)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Horizonatal" type="Sprite2D" parent="Borders/Bottom" unique_id=1895324539]
+texture = ExtResource("6_tj5wv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders/Bottom" unique_id=550291102]
+shape = SubResource("RectangleShape2D_1xqow")
 
 [node name="TopLeft" type="Sprite2D" parent="Borders" unique_id=442324929]
 position = Vector2(16, 16)

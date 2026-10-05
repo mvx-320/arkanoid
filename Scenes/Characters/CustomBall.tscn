@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://dqlsxpye0xo04"]
+
+[ext_resource type="Texture2D" uid="uid://f880yuq5kmu4" path="res://Art/32/ball.png" id="1_w623s"]
+[ext_resource type="Script" uid="uid://coxfot3t4wtan" path="res://Code/CustomBall.cs" id="2_skluh"]
+
+[node name="CostumBall" type="Sprite2D" unique_id=690026073]
+texture = ExtResource("1_w623s")
+script = ExtResource("2_skluh")

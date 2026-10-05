@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://da274lbk0m5jp"]
+
+[ext_resource type="Texture2D" uid="uid://c40t2y15viup8" path="res://Art/32/vertical.png" id="1_217jt"]
+[ext_resource type="Texture2D" uid="uid://ctcm7cou67ome" path="res://Art/32/corner.png" id="2_awym5"]
+[ext_resource type="Texture2D" uid="uid://1q61wr6k5ocm" path="res://Art/32/horizontal.png" id="3_awym5"]
+[ext_resource type="PackedScene" uid="uid://dqlsxpye0xo04" path="res://Scenes/Characters/CustomBall.tscn" id="4_xahdb"]
+
+[node name="NoPhysics" type="Node2D" unique_id=1461555730]
+
+[node name="Bounds" type="Node2D" parent="." unique_id=1988293294]
+
+[node name="Left" type="Sprite2D" parent="Bounds" unique_id=648075451]
+position = Vector2(16, 179)
+scale = Vector2(1, 9.250001)
+texture = ExtResource("1_217jt")
+
+[node name="Right" type="Sprite2D" parent="Bounds" unique_id=92250911]
+position = Vector2(624, 180)
+scale = Vector2(1, 9.250001)
+texture = ExtResource("1_217jt")
+
+[node name="TopLeft" type="Sprite2D" parent="Bounds" unique_id=1125082865]
+position = Vector2(16, 16)
+texture = ExtResource("2_awym5")
+
+[node name="TopRight" type="Sprite2D" parent="Bounds" unique_id=2021869758]
+position = Vector2(624, 16)
+texture = ExtResource("2_awym5")
+
+[node name="BotttomRight" type="Sprite2D" parent="Bounds" unique_id=201972725]
+position = Vector2(624, 344)
+texture = ExtResource("2_awym5")
+
+[node name="BottomLeft" type="Sprite2D" parent="Bounds" unique_id=288901435]
+position = Vector2(16, 344)
+texture = ExtResource("2_awym5")
+
+[node name="Top" type="Sprite2D" parent="Bounds" unique_id=1923249785]
+position = Vector2(320, 16)
+scale = Vector2(18, 1)
+texture = ExtResource("3_awym5")
+
+[node name="Bottom" type="Sprite2D" parent="Bounds" unique_id=217569423]
+position = Vector2(320, 344)
+scale = Vector2(18, 1)
+texture = ExtResource("3_awym5")
+
+[node name="CostumBall" parent="." unique_id=690026073 node_paths=PackedStringArray("_walls") instance=ExtResource("4_xahdb")]
+position = Vector2(318, 142)
+_walls = [NodePath("../Bounds/Left"), NodePath("../Bounds/Right"), NodePath("../Bounds/Top"), NodePath("../Bounds/Bottom")]

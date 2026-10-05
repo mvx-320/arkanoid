@@ -1,15 +1,53 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using GA.Common;
 
-public partial class Level : Node
+namespace GA.GameProgramming
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	public partial class Level : Node2D
 	{
-	}
+		#region Statics
+		public static Level Current
+		{
+			get;
+			private set;
+		}
+		#endregion Statics
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+		[Export] private Paddle _paddle = null;
+		[Export] private Ball _ball = null;
+		[Export] private int _wallWidth = 0;
+		public Paddle Paddle { get { return _paddle; } }
+		public Ball Ball { get { return _ball; } }
+		public int WallWidth { get { return _wallWidth; } }
+
+		public Vector2 WindowSize
+		{
+			get
+			{
+				return GetViewport().GetVisibleRect().Size;
+			}
+		}
+		public override void _Ready()
+		{
+			Current = this;
+
+			if (_paddle == null)
+			{
+				_paddle = this.GetNode<Paddle>();
+				// Same as this
+				// _paddle = NodeExtensions.GetNode<Paddle>(this);
+			}
+
+			if (_ball == null)
+			{
+				_ball = this.GetNode<Ball>("Ball");
+			}
+			
+			IList<Ball> balls = this.GetNodes<Ball>(recursive:true);
+			GD.Print($"Found {balls.Count} balls.");
+		}
+
 	}
 }
