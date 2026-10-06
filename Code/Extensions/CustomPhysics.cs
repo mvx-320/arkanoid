@@ -1,4 +1,5 @@
 using Godot;
+using GA.Common;
 
 namespace GA.GameProgramming
 {
@@ -11,10 +12,12 @@ namespace GA.GameProgramming
 
     public static class CustomPhysics
     {
-        public static Hit IntersectsCircle(Vector2 rectCenter, Vector2 rectExtents, Vector2 circleCenter, float radius)
+        public static Hit IntersectsCircle(Rect2 rect, Vector2 circleCenter, float radius)
         {
-            Vector2 expandedExtents = rectExtents + new Vector2(radius, radius);
+            Vector2 rectCenter = rect.GetCenter();
+            Vector2 rectExtents = rect.GetExtents();
 
+            Vector2 expandedExtents = rectExtents + new Vector2(radius, radius);
             Vector2 delta = circleCenter - rectCenter;
 
             float penetrationX = expandedExtents.X - Mathf.Abs(delta.X);

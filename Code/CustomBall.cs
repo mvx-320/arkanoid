@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using GA.Common;
 
 namespace GA.GameProgramming
 {
@@ -49,10 +51,11 @@ namespace GA.GameProgramming
 			for (int i = 0; i < _walls.Length; i++)
 			{
 				Sprite2D wall = _walls[i];
-				Vector2 wallCenter = wall.Position;
-				Vector2 wallExtents = wall.Texture.GetSize() * wall.Scale * 0.5f;
+				Rect2 wallBox = wall.GetBoundingBox();
+				// Vector2 wallCenter = wall.Position;
+				// Vector2 wallExtents = wall.Texture.GetSize() * wall.Scale * 0.5f;
 
-				Hit hit = CustomPhysics.IntersectsCircle(wallCenter, wallExtents, newPosition, 10f);
+				Hit hit = CustomPhysics.IntersectsCircle(wallBox, newPosition, 10f);
 
 				if (hit == null)
 				{
