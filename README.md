@@ -13,3 +13,7 @@ In multiple Exercises we are programming Arkanoid.
 ## AI Usage
 - I used the Autocompletion AI feature, but mostly for the Syntax of formulars
 - Brainstorming while making it run 
+
+# TODO
+- [ ] Don't clamp paddle by viewport
+- [ ] Let the ball bounce different of were it hits the paddle
