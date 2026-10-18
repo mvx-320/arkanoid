@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://de2njorbeaiwp"]
+
+[ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/BlockGreen.tscn" id="1_n75wd"]
+
+[node name="Block" unique_id=2013902506 instance=ExtResource("1_n75wd")]
+modulate = Color(0.897048, 0, 0.07898354, 1)
+_score = 20
+
+[node name="CollisionShape2D" parent="." index="0" unique_id=1646551362]
+debug_color = Color(0.8764257, 0.31402972, 0.37208086, 0.41960785)

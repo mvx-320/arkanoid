@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://d20d5u6ily8mp"]
+
+[ext_resource type="Shader" uid="uid://dbd84ejhbd5j3" path="res://Shader/NineSliceSprite2D.gdshader" id="2_kp44t"]
+
+[resource]
+shader = ExtResource("2_kp44t")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/right = 18
+shader_parameter/top = 0
+shader_parameter/left = 18
+shader_parameter/bottom = 0

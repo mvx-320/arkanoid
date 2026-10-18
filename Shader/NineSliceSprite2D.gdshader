@@ -1,3 +1,6 @@
+// Source: https://godotshaders.com/shader/9-slice-shader/?post_id=2490&new_post=true
+// License: CC0, https://creativecommons.org/publicdomain/zero/1.0/
+
 shader_type canvas_item;
 
 uniform vec2 scale;

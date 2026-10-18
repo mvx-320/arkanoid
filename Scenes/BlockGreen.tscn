@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dhnq043crlbi8"]
+
+[ext_resource type="Script" uid="uid://dlmxd2wolt3mv" path="res://Code/Level/Block.cs" id="1_x55lh"]
+[ext_resource type="Texture2D" uid="uid://cx7aed3nw5rl6" path="res://Art/32/block.png" id="2_ujcp4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f5xkv"]
+size = Vector2(64, 32)
+
+[node name="Block" type="StaticBody2D" unique_id=2013902506]
+modulate = Color(1.1792034e-05, 0.7049692, 0.094794475, 1)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_x55lh")
+_score = 50
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1646551362]
+shape = SubResource("RectangleShape2D_f5xkv")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=7068191]
+texture = ExtResource("2_ujcp4")

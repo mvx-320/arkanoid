@@ -15,6 +15,10 @@ run/main_scene="uid://ccfwg1gqrbnow"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameManager="*uid://bi3farsk6f5tm"
+
 [display]
 
 window/size/viewport_width=640
@@ -76,4 +80,3 @@ MouseLeft={
 
 textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
-environment/defaults/default_clear_color=Color(0, 0, 0, 1)

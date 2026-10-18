@@ -2,15 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://bab6fd7fhlwph" path="res://Art/32/paddle.png" id="1_r5bw3"]
 [ext_resource type="Script" uid="uid://ck30xr03n2j8c" path="res://Code/Paddle.cs" id="2_g3s6r"]
-[ext_resource type="Shader" uid="uid://dbd84ejhbd5j3" path="res://Shader/NineSliceSprite2D.gdshader" id="2_lyy1j"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxgdn"]
-shader = ExtResource("2_lyy1j")
-shader_parameter/scale = Vector2(1, 1)
-shader_parameter/right = 18
-shader_parameter/top = 18
-shader_parameter/left = 0
-shader_parameter/bottom = 0
+[ext_resource type="Material" uid="uid://d20d5u6ily8mp" path="res://Materials/NineSlicePaddle.tres" id="2_xxgdn"]
+[ext_resource type="Script" uid="uid://dcoyet8s33ori" path="res://Code/NineSliceSpride2D.cs" id="4_xxgdn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e6s6k"]
 radius = 14.0
@@ -20,10 +13,10 @@ height = 60.0
 script = ExtResource("2_g3s6r")
 _spritePaddle = NodePath("Sprite2D")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2136754687]
-material = SubResource("ShaderMaterial_xxgdn")
-scale = Vector2(1.0084745, 1.03125)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=954642951]
+material = ExtResource("2_xxgdn")
 texture = ExtResource("1_r5bw3")
+script = ExtResource("4_xxgdn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1971691771]
 rotation = 1.5707964
