@@ -1,16 +1,17 @@
 [gd_scene format=3 uid="uid://c2p6a6wv3so3g"]
 
 [ext_resource type="Texture2D" uid="uid://bab6fd7fhlwph" path="res://Art/32/paddle.png" id="1_r5bw3"]
-[ext_resource type="Script" uid="uid://ck30xr03n2j8c" path="res://Code/Paddle.cs" id="2_g3s6r"]
+[ext_resource type="Script" uid="uid://b8xo2rvs6gvhr" path="res://Code/Paddle.cs" id="2_g3s6r"]
 [ext_resource type="Material" uid="uid://d20d5u6ily8mp" path="res://Materials/NineSlicePaddle.tres" id="2_xxgdn"]
-[ext_resource type="Script" uid="uid://dcoyet8s33ori" path="res://Code/NineSliceSpride2D.cs" id="4_xxgdn"]
+[ext_resource type="Script" uid="uid://dcoyet8s33ori" path="res://Code/NineSliceSprite2D.cs" id="4_xxgdn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_e6s6k"]
 radius = 14.0
 height = 60.0
 
-[node name="Paddle" type="CharacterBody2D" unique_id=787059618 node_paths=PackedStringArray("_spritePaddle")]
+[node name="Paddle" type="CharacterBody2D" unique_id=787059618 node_paths=PackedStringArray("_ballStartPoint", "_spritePaddle")]
 script = ExtResource("2_g3s6r")
+_ballStartPoint = NodePath("BallStartPosition")
 _spritePaddle = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=954642951]
@@ -21,3 +22,6 @@ script = ExtResource("4_xxgdn")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1971691771]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_e6s6k")
+
+[node name="BallStartPosition" type="Node2D" parent="." unique_id=1690412927]
+position = Vector2(0, -35)

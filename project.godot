@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*uid://bi3farsk6f5tm"
+GameManager="*uid://dwur2rw8uxxev"
 
 [display]
 
@@ -71,6 +71,7 @@ MouseLeft={
 2d_physics/layer_1="Ball"
 2d_physics/layer_2="Paddle"
 2d_physics/layer_3="Wall"
+2d_physics/layer_4="Block"
 
 [physics]
 

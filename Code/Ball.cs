@@ -5,7 +5,7 @@ namespace GA.GameProgramming
 {
 	public partial class Ball : CharacterBody2D 
 	{
-        [Export] private Vector2 _direction = new Vector2(0, -1);
+        [Export] private Vector2 _direction = Vector2.Zero;
 		[Export] private float _speed = 100;
         [Export] private CharacterBody2D _paddle;
         [Export] private float _paddleOffsetY = -35;
@@ -26,8 +26,36 @@ namespace GA.GameProgramming
             get { return _speed; }
         }
 
+        public bool IsFlying
+        {
+            get { return _ballState == BallState.Flying; }
+        }
 
-		// Called every frame. 'delta' is the elapsed time since the previous frame.
+        public Vector2 Direction
+        {
+            get 
+            { 
+                // Ball gets random lauch angle when OnPaddle
+                float randomAngle = GD.Randf() * _maxLaunchAngle - _maxLaunchAngle / 2;
+                float randomDirectionX = Mathf.Tan(randomAngle / 180 * Mathf.Pi);
+                _direction = new Vector2(randomDirectionX, -1).Normalized();
+
+                return _direction; 
+            }
+        }
+
+        public void Launch(Vector2 direction)
+        {
+            if (_ballState == BallState.OnPaddle)
+            {
+                _ballState = BallState.Flying;
+                _direction = direction.Normalized();
+                Velocity = _direction * _speed;
+            }
+        }
+
+
+        /*
 		public override void _Process(double delta)
         {
             float deltaTime = (float)delta;
@@ -40,10 +68,6 @@ namespace GA.GameProgramming
 
             if (_ballState == BallState.OnPaddle)
             {
-                // Ball gets random lauch angle when OnPaddle
-                float randomAngle = GD.Randf() * _maxLaunchAngle - _maxLaunchAngle / 2;
-                float randomDirectionX = Mathf.Tan(randomAngle / 180 * Mathf.Pi);
-                _direction = new Vector2(randomDirectionX, -1).Normalized();
 
                 Position = new Vector2(_paddle.Position.X, _paddle.Position.Y + _paddleOffsetY);
             }
@@ -67,13 +91,36 @@ namespace GA.GameProgramming
                 }
             }
         }
+        */
 
         /// <summary>
         /// If physics engine is used, physics calculations should be done here.
         /// </summary>
         public override void _PhysicsProcess(double delta)
         {
-            base._PhysicsProcess(delta);
+            if (_direction.IsZeroApprox())
+            {
+                // Ball not launched yet
+                return;
+            }
+
+            float deltaTime = (float)delta;
+
+            var collisionInfo = MoveAndCollide(Velocity * deltaTime);
+            if (collisionInfo != null)
+            {
+                GodotObject collider = collisionInfo.GetCollider();
+                if (collider != null)
+                {
+                    if (collider is Block block)
+                    {
+                        block.Hit();
+                    }
+                }
+
+                _direction = _direction.Bounce(collisionInfo.GetNormal());
+                Velocity = _direction * _speed;
+            }   
         }
 	}
 }

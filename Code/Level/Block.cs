@@ -12,6 +12,8 @@ namespace GA.GameProgramming
 			// Should be called whenever a ball hits the block. 
 			// For now all blocks are destroyed in one hit.
 			// TODO: Implement health functionality to enable multiple hit support.
+			GD.Print($"Block hit! Score: {_score}");
+		
 			GameManager.Instance.AddScore(_score);
 			EmitSignal(SignalName.BlockDestroyed);
 			QueueFree();

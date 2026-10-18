@@ -50,15 +50,5 @@ namespace GA.GameProgramming
 			GD.Print($"Found {balls.Count} balls.");
 			*/
 		}
-
-        public override void _Input(InputEvent @event)
-        {
-            base._Input(@event);
-			     
-			if (@event.IsActionPressed("TestScore"))
-			{
-				GameManager.Instance.AddScore(10);
-			}
-        }
 	}
 }

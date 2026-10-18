@@ -6,6 +6,7 @@ namespace GA.GameProgramming
 	public partial class Paddle : CharacterBody2D
 	{
 		[Export] private float _paddleSpeed = 10;
+		[Export] private Node2D _ballStartPoint;
 		[Export] private Sprite2D _spritePaddle;
 		[Export] private Sprite2D _spriteWallLeft;
 		[Export] private Sprite2D _spriteWallRight;
@@ -49,6 +50,14 @@ namespace GA.GameProgramming
 			get { return _paddleSpeed; }
 		}
 
+		public Ball Ball
+		{
+			get
+			{
+				return Level.Current.Ball;
+			}
+		}
+
 		// Called every frame. 'delta' is the elapsed time since the previous frame.
 		public override void _Process(double delta)
 		{
@@ -78,9 +87,17 @@ namespace GA.GameProgramming
 			if (Input.IsActionJustPressed("LaunchBall"))
 			{
 				GD.Print("LaunchBall action pressed");
+				if (Ball != null && Ball.IsFlying == false)
+				{
+					Ball.Launch(Ball.Direction);
+				}
 			}
 
-			
+			if (Ball != null && Ball.IsFlying == false)
+			{
+				Vector2 ballPosition = _ballStartPoint.GlobalPosition;
+				Ball.GlobalPosition = ballPosition;
+			}
 		}
 
 		private Vector2 GetNewPaddlePosition(float deltaTime, Vector2 currentPosition, float paddleInput)
