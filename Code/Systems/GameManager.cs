@@ -27,9 +27,13 @@ namespace GA.GameProgramming
 		}
 		# endregion Singleton
 
-		[Signal]
-		public delegate void ScoreChangedEventHandler(int newScore);
+		[Signal] public delegate void ScoreChangedEventHandler(int newScore);
+		[Signal] public delegate void LivesChangedEventHandler(int newLives);
+		[Signal] public delegate void RespawnEventHandler();
+		[Signal] public delegate void GameOverEventHandler();
+		
 		private int _score = 0;
+		private int _lives = 3;
   
 		public int Score
 		{
@@ -41,6 +45,18 @@ namespace GA.GameProgramming
 				EmitSignal(SignalName.ScoreChanged, _score);
 			}
 		}
+
+		public int Lives
+		{
+			get { return _lives; }
+			private set
+			{
+				_lives = value;
+				GD.Print($"Lives changed to {_lives}");
+				EmitSignal(SignalName.LivesChanged, _lives);
+			}
+		}
+
 		protected virtual void Initialize()
 		{
 			GD.Print("GameManager initialized");
@@ -51,6 +67,21 @@ namespace GA.GameProgramming
 			if (scoreToAdd < 0) { return; }
 
 			Score += scoreToAdd;
+		}
+
+		public void DecrementLives()
+		{
+			Lives--;
+
+			if (Lives > 0)
+			{
+				EmitSignal(SignalName.Respawn);
+			}
+			else
+			{
+				EmitSignal(SignalName.GameOver);
+			}
+
 		}
 	}
 }

@@ -54,6 +54,13 @@ namespace GA.GameProgramming
             }
         }
 
+        public void Reset()
+        {
+            _ballState = BallState.OnPaddle;
+            Position = new Vector2(_paddle.Position.X, _paddle.Position.Y + _paddleOffsetY);
+            Velocity = Vector2.Zero;
+        }
+
 
         /*
 		public override void _Process(double delta)
@@ -110,11 +117,18 @@ namespace GA.GameProgramming
             if (collisionInfo != null)
             {
                 GodotObject collider = collisionInfo.GetCollider();
+                GD.Print($"Ball collided: {collider} , collision normal: {collisionInfo.GetNormal()}");
                 if (collider != null)
                 {
                     if (collider is Block block)
                     {
                         block.Hit();
+                    }
+
+                    if (collider is DeathZone deathZone)
+                    {
+                        deathZone.Hit();
+                        Reset();
                     }
                 }
 

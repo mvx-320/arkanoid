@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cj4xlm3w0nfq6" path="res://Scenes/Characters/Ball.tscn" id="3_4d3fe"]
 [ext_resource type="Texture2D" uid="uid://c40t2y15viup8" path="res://Art/32/vertical.png" id="3_kri6y"]
 [ext_resource type="Texture2D" uid="uid://ctcm7cou67ome" path="res://Art/32/corner.png" id="4_4d3fe"]
+[ext_resource type="Script" uid="uid://dvefnpwe43s2f" path="res://Code/DeathZone.cs" id="6_or7tv"]
 [ext_resource type="Texture2D" uid="uid://1q61wr6k5ocm" path="res://Art/32/horizontal.png" id="6_tj5wv"]
 [ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/BlockGreen.tscn" id="7_5rrr5"]
 [ext_resource type="PackedScene" uid="uid://de2njorbeaiwp" path="res://Scenes/BlockRed.tscn" id="8_or7tv"]
@@ -79,8 +80,8 @@ shape = SubResource("RectangleShape2D_he6jc")
 [node name="Bottom" type="StaticBody2D" parent="Bounds" unique_id=1015749783]
 position = Vector2(320, 344)
 scale = Vector2(18, 1)
-collision_layer = 2
-collision_mask = 0
+collision_layer = 4
+script = ExtResource("6_or7tv")
 
 [node name="Horizonatal" type="Sprite2D" parent="Bounds/Bottom" unique_id=1895324539]
 texture = ExtResource("6_tj5wv")

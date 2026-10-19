@@ -49,6 +49,16 @@ namespace GA.GameProgramming
 			IList<Ball> balls = this.GetNodes<Ball>(recursive:true);
 			GD.Print($"Found {balls.Count} balls.");
 			*/
+
+			GameManager.Instance.Respawn += _ball.Reset;
+			GameManager.Instance.GameOver += OnGameOver;
+		}
+		
+		private void OnGameOver()
+		{
+			_ball.QueueFree();
+			_paddle.QueueFree();
+			GD.Print("Game Over!");
 		}
 	}
 }
