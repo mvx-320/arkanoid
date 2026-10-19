@@ -7,8 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://ctcm7cou67ome" path="res://Art/32/corner.png" id="4_4d3fe"]
 [ext_resource type="Script" uid="uid://dvefnpwe43s2f" path="res://Code/DeathZone.cs" id="6_or7tv"]
 [ext_resource type="Texture2D" uid="uid://1q61wr6k5ocm" path="res://Art/32/horizontal.png" id="6_tj5wv"]
-[ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/BlockGreen.tscn" id="7_5rrr5"]
-[ext_resource type="PackedScene" uid="uid://de2njorbeaiwp" path="res://Scenes/BlockRed.tscn" id="8_or7tv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e6s6k"]
 size = Vector2(32, 296)
@@ -104,23 +102,3 @@ texture = ExtResource("4_4d3fe")
 [node name="BottomRight" type="Sprite2D" parent="Bounds" unique_id=1682273210]
 position = Vector2(624, 344)
 texture = ExtResource("4_4d3fe")
-
-[node name="Blocks" type="Node2D" parent="." unique_id=1599320812]
-
-[node name="Block" parent="Blocks" unique_id=2013902506 instance=ExtResource("7_5rrr5")]
-position = Vector2(172, 128)
-
-[node name="Block2" parent="Blocks" unique_id=2129583355 instance=ExtResource("7_5rrr5")]
-position = Vector2(238, 128)
-
-[node name="Block3" parent="Blocks" unique_id=1053366142 instance=ExtResource("7_5rrr5")]
-position = Vector2(393, 129)
-
-[node name="Block4" parent="Blocks" unique_id=490468019 instance=ExtResource("7_5rrr5")]
-position = Vector2(459, 129)
-
-[node name="Block5" parent="Blocks" unique_id=428113409 instance=ExtResource("8_or7tv")]
-position = Vector2(207, 94)
-
-[node name="Block6" parent="Blocks" unique_id=2068502171 instance=ExtResource("8_or7tv")]
-position = Vector2(427, 96)

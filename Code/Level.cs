@@ -18,6 +18,7 @@ namespace GA.GameProgramming
 		[Export] private Paddle _paddle = null;
 		[Export] private Ball _ball = null;
 		[Export] private int _wallWidth = 0;
+		[Export] private Node2D _levelContent = null;
 		public Paddle Paddle { get { return _paddle; } }
 		public Ball Ball { get { return _ball; } }
 		public int WallWidth { get { return _wallWidth; } }
@@ -52,6 +53,10 @@ namespace GA.GameProgramming
 
 			GameManager.Instance.Respawn += _ball.Reset;
 			GameManager.Instance.GameOver += OnGameOver;
+
+			PackedScene scene = GD.Load<PackedScene>("res://Scenes/Levels/LevelContent.tscn");
+			Node content = scene.Instantiate();
+			AddChild(content);
 		}
 		
 		private void OnGameOver()

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bxo3h482lmgsm"]
+
+[ext_resource type="Script" uid="uid://c2r60g1mka8o6" path="res://Code/Level/LevelContent.cs" id="1_7enyk"]
+[ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/BlockGreen.tscn" id="1_57h2v"]
+[ext_resource type="PackedScene" uid="uid://de2njorbeaiwp" path="res://Scenes/BlockRed.tscn" id="2_7enyk"]
+
+[node name="Blocks" type="Node2D" unique_id=1410397790]
+script = ExtResource("1_7enyk")
+
+[node name="Block" parent="." unique_id=2013902506 instance=ExtResource("1_57h2v")]
+position = Vector2(172, 128)
+
+[node name="Block2" parent="." unique_id=503208180 instance=ExtResource("1_57h2v")]
+position = Vector2(238, 128)
+
+[node name="Block3" parent="." unique_id=1044813403 instance=ExtResource("1_57h2v")]
+position = Vector2(393, 129)
+
+[node name="Block4" parent="." unique_id=365060715 instance=ExtResource("1_57h2v")]
+position = Vector2(459, 129)
+
+[node name="Block5" parent="." unique_id=964827699 instance=ExtResource("2_7enyk")]
+position = Vector2(207, 94)
+
+[node name="Block6" parent="." unique_id=1126030912 instance=ExtResource("2_7enyk")]
+position = Vector2(427, 96)
