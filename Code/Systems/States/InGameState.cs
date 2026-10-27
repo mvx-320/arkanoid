@@ -1,0 +1,25 @@
+using Godot;
+
+namespace GA.GameProgramming.State
+{
+    public class InGameState : GameStateBase
+    {
+        public override GameStateType StateType => GameStateType.InGame;
+        public override string ScenePath => "res://Scenes/Levels/Level.tscn";
+        public InGameState() : base()
+        {
+            AddTargetState(GameStateType.Pause);
+            AddTargetState(GameStateType.Win);
+            AddTargetState(GameStateType.GameOver);
+            AddTargetState(GameStateType.InGame); // For level completion
+        }
+
+        public override void OnEnter(bool keepLoaded)
+        {
+            // Call parent class's implementation first.
+            base.OnEnter(keepLoaded);
+
+            // Additional logic for entering the InGame state can be added here.
+        }
+    }
+}

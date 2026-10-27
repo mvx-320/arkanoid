@@ -15,10 +15,15 @@ namespace GA.GameProgramming
 		}
 		#endregion Statics
 
+
 		[Export] private Paddle _paddle = null;
 		[Export] private Ball _ball = null;
 		[Export] private int _wallWidth = 0;
-		[Export] private Node2D _levelContent = null;
+		// [Export] private Node2D _levelContent = null;
+		[Export] private LevelBlockMapping _levelContent = null;
+		[Export] private int _levelId = 1; // TODO: Move this to GameManager!
+
+
 		public Paddle Paddle { get { return _paddle; } }
 		public Ball Ball { get { return _ball; } }
 		public int WallWidth { get { return _wallWidth; } }

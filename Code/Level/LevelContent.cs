@@ -1,15 +1,22 @@
 using Godot;
-using System;
+using Godot.Collections;
 
-public partial class LevelContent : Node2D
+namespace GA.GameProgramming
 {
-	[Export] private StaticBody2D[] blocks = new StaticBody2D[6];
-	public override void _Ready()
+	[GlobalClass]
+	public partial class LevelBlockMapping : Resource
 	{
-	}
+		[Export] 
+		private Array<PackedScene> _blockMapping = new Array<PackedScene>();
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+		public PackedScene GetLevelBlocks(int levelId)
+		{
+			if (levelId < 1 || levelId > _blockMapping.Count)
+			{
+				GD.PrintErr($"Invalid levelId {levelId}. Valid range is 1 to {_blockMapping.Count}");
+				return null;
+			}
+			return _blockMapping[levelId - 1];
+		}
 	}
 }
