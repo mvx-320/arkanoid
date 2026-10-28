@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://bxo3h482lmgsm"]
 
-[ext_resource type="Script" uid="uid://c2r60g1mka8o6" path="res://Code/Level/LevelContent.cs" id="1_7enyk"]
-[ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/BlockGreen.tscn" id="1_57h2v"]
-[ext_resource type="PackedScene" uid="uid://de2njorbeaiwp" path="res://Scenes/BlockRed.tscn" id="2_7enyk"]
+[ext_resource type="Script" path="res://Code/Level/LevelContent.cs" id="1_7enyk"]
+[ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/Levels/BlockGreen.tscn" id="1_57h2v"]
+[ext_resource type="PackedScene" uid="uid://de2njorbeaiwp" path="res://Scenes/Levels/BlockRed.tscn" id="2_7enyk"]
 
-[node name="Blocks" type="Node2D" unique_id=1410397790]
+[node name="Blocks" type="Node2D" unique_id=1410397790 node_paths=PackedStringArray("blocks")]
 script = ExtResource("1_7enyk")
+blocks = []
 
 [node name="Block" parent="." unique_id=2013902506 instance=ExtResource("1_57h2v")]
 position = Vector2(172, 128)

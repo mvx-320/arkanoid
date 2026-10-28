@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dtnaookpnscg"]
+
+[ext_resource type="PackedScene" uid="uid://de2njorbeaiwp" path="res://Scenes/Levels/BlockRed.tscn" id="1_y23py"]
+[ext_resource type="PackedScene" uid="uid://dhnq043crlbi8" path="res://Scenes/Levels/BlockGreen.tscn" id="2_2qduh"]
+
+[node name="BlocksLevel1" type="Node2D" unique_id=1742831327]
+
+[node name="Block" parent="." unique_id=2013902506 instance=ExtResource("1_y23py")]
+position = Vector2(216, 117)
+
+[node name="Block2" parent="." unique_id=1705844083 instance=ExtResource("2_2qduh")]
+position = Vector2(192, 155)
+
+[node name="Block3" parent="." unique_id=322735114 instance=ExtResource("1_y23py")]
+position = Vector2(287, 114)
+
+[node name="Block4" parent="." unique_id=1863759488 instance=ExtResource("1_y23py")]
+position = Vector2(300, 192)
+
+[node name="Block5" parent="." unique_id=643791804 instance=ExtResource("2_2qduh")]
+position = Vector2(296, 152)
+
+[node name="Block6" parent="." unique_id=1693024720 instance=ExtResource("2_2qduh")]
+position = Vector2(298, 231)
+
+[node name="Block7" parent="." unique_id=1177880279 instance=ExtResource("2_2qduh")]
+position = Vector2(258, 68)

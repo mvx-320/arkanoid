@@ -5,9 +5,9 @@ namespace GA.GameProgramming
 {
     public partial class MainMenuControl : Control
     {
-        [Export] private Button _startButton = null;
-        [Export] private Button _settingsButton = null;
-        [Export] private Button _exitButton = null;
+        [Export] private Button _newGameButton = null;
+        [Export] private Button _settingsGameButton = null;
+        [Export] private Button _quitGameButton = null;
 
         public override void _EnterTree()
         {

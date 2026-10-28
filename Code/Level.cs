@@ -20,7 +20,7 @@ namespace GA.GameProgramming
 		[Export] private Ball _ball = null;
 		[Export] private int _wallWidth = 0;
 		// [Export] private Node2D _levelContent = null;
-		[Export] private LevelBlockMapping _levelContent = null;
+		[Export] private LevelBlockMapping _levelBlockMapping = null;
 		[Export] private int _levelId = 1; // TODO: Move this to GameManager!
 
 
@@ -35,6 +35,29 @@ namespace GA.GameProgramming
 				return GetViewport().GetVisibleRect().Size;
 			}
 		}
+
+        public override void _EnterTree()
+        {
+            GameManager.Instance.LivesChanged += OnLivesChanged;
+        }
+        public override void _ExitTree()
+        {
+			GameManager.Instance.LivesChanged -= OnLivesChanged;
+        }
+		private void OnLivesChanged(int lives)
+		{
+			if (lives <= 0)
+			{
+				// Game over, so reset the level.
+				GD.Print("Game Over! Resetting the level.");
+				if (Ball != null)
+				{
+					Ball.QueueFree();
+					_ball = null;
+				}
+			}
+		}
+
 		public override void _Ready()
 		{
 			Current = this;
@@ -51,18 +74,47 @@ namespace GA.GameProgramming
 				_ball = this.GetNode<Ball>("Ball");
 			}
 			
+			InstantiateLevel();
 			/*
 			IList<Ball> balls = this.GetNodes<Ball>(recursive:true);
 			GD.Print($"Found {balls.Count} balls.");
 			*/
 
-			GameManager.Instance.Respawn += _ball.Reset;
-			GameManager.Instance.GameOver += OnGameOver;
+			// GameManager.Instance.Respawn += _ball.Reset;
+			// GameManager.Instance.GameOver += OnGameOver;
 
-			PackedScene scene = GD.Load<PackedScene>("res://Scenes/Levels/LevelContent.tscn");
-			Node content = scene.Instantiate();
-			AddChild(content);
+			// PackedScene scene = GD.Load<PackedScene>("res://Scenes/Levels/LevelContent.tscn");
+			// Node content = scene.Instantiate();
+			// AddChild(content);
 		}
+		private void InstantiateLevel()
+		{
+			if (_levelBlockMapping != null)
+			{
+				PackedScene levelBlocksScene = _levelBlockMapping.GetLevelBlocks(_levelId);
+				if (levelBlocksScene != null)
+				{
+					Node2D levelBlocksInstance = levelBlocksScene.Instantiate() as Node2D;
+					if (levelBlocksInstance != null)
+					{
+						AddChild(levelBlocksInstance);
+					}
+					else
+					{
+						GD.PrintErr($"Failed to instantiate level blocks for level {_levelId}.");
+					}
+				}
+				else
+				{
+					GD.PrintErr($"No level blocks found for level {_levelId}.");
+				}
+			}
+			else
+			{
+				GD.PrintErr("LevelBlockMapping is not assigned.");
+			}
+		}
+
 		
 		private void OnGameOver()
 		{

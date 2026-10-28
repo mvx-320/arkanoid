@@ -52,10 +52,10 @@ namespace GA.GameProgramming
 
   
 		// GameStateBase mainMenu = GetState(GameStateTypeMainMenu
-		public Stack<GameStateBase> LoadedStates { get; private set; }
+		public Stack<GameStateBase> LoadedStates { get; private set; } = new Stack<GameStateBase>();
 		public GameStateBase ActiveState
 		{
-			get { return LoadedStates.Count > 0 ? _loadedStates.Peek() : null; }
+			get { return LoadedStates.Count > 0 ? LoadedStates.Peek() : null; }
 		}
   
 		public int Score
