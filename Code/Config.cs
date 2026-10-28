@@ -8,5 +8,6 @@ namespace GA.GameProgramming
 		public const float MaxSpeed = 500f;
 		public const float MinSpeed = 0f;
 		public const int MaxLives = 99;
+		public const int StartLives = 3;
 	}
 }

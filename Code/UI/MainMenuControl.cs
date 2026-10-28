@@ -13,11 +13,15 @@ namespace GA.GameProgramming
         {
             // TODO: Subscribe to the rest of the vuttons Pressed signals as well.
             _newGameButton.Pressed += OnNewGamePressed;
+            _settingsGameButton.Pressed += OnSettingsPressed;
+            _quitGameButton.Pressed += OnQuitPressed;
         }
 
         public override void _ExitTree()
         {
             _newGameButton.Pressed -= OnNewGamePressed;
+            _settingsGameButton.Pressed -= OnSettingsPressed;
+            _quitGameButton.Pressed -= OnQuitPressed;
         }
 
         private void OnNewGamePressed()
@@ -27,5 +31,15 @@ namespace GA.GameProgramming
                 GD.PushError("Failed to change state to InGame.");
             }   
         }
+
+        private void OnSettingsPressed()
+        {
+            if (!GameManager.Instance.ChangeState(GameStateType.Settings))
+            {
+                GD.PushError("Failed to change state to Settings.");
+            }
+        }
+
+        private void OnQuitPressed() { GetTree().Quit(); }
     }
 }

@@ -38,7 +38,7 @@ namespace GA.GameProgramming
 		[Signal] public delegate void GameOverEventHandler();
 		
 		private int _score = 0;
-		private int _lives = 3;
+		private int _lives = Config.StartLives;
 		
 		private SceneTree _sceneTree = null;
 		// Containes all states that are currently loaded.
@@ -48,6 +48,8 @@ namespace GA.GameProgramming
 		{
 			new MainMenuState(),
 			new InGameState(),
+			new SettingsState(),
+			new GameOverState(),
 		};
 
   
@@ -135,6 +137,10 @@ namespace GA.GameProgramming
 		/// <returns>True if the state was changed, false otherwise.</returns>
 		public bool ChangeState(GameStateType targetStateType, bool force = false)
 		{
+			// GameManager.ChangeState, first line (temporary)
+			GD.Print($"ChangeState {ActiveState?.StateType} -> {targetStateType}, stack: {LoadedStates.Count}");
+
+
 			// Is the ransition from the current state to the target state valid?
 			if (ActiveState != null && !ActiveState.CanTransitionTo(targetStateType))
 			{
@@ -163,8 +169,8 @@ namespace GA.GameProgramming
 				}
 			}
 
-			LoadedStates.Push(nextState);
 			nextState.OnEnter(force);
+			LoadedStates.Push(nextState);
 
 			return true;
 		}
@@ -192,6 +198,20 @@ namespace GA.GameProgramming
 			return true;
 		}
 
+		public bool StartNewGame()
+		{
+			Score = 0;
+			Lives = Config.StartLives;
+
+			if (!ChangeState(GameStateType.InGame, force: true))
+			{
+				GD.PushError("Failed to start a new game.");
+				return false;
+			}
+
+			return true;
+		}
+
 		public void AddScore(int scoreToAdd)
 		{
 			if (scoreToAdd < 0) { return; }
@@ -214,6 +234,7 @@ namespace GA.GameProgramming
 			else
 			{
 				EmitSignal(SignalName.GameOver);
+				ChangeState(GameStateType.GameOver);
 			}
 
 		}

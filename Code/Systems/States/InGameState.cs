@@ -14,10 +14,10 @@ namespace GA.GameProgramming.State
             AddTargetState(GameStateType.InGame); // For level completion
         }
 
-        public override void OnEnter(bool keepLoaded)
+        public override void OnExit(bool keepLoaded)
         {
             // Call parent class's implementation first.
-            base.OnEnter(keepLoaded);
+            base.OnExit(keepLoaded);
 
             // Additional logic for entering the InGame state can be added here.
         }

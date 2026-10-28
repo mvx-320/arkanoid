@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://ip1dlv47fyrq"]
+
+[ext_resource type="Script" uid="uid://brja2jsk42sc1" path="res://Code/UI/SettingsControl.cs" id="1_f2eg1"]
+[ext_resource type="Texture2D" uid="uid://cn2iutajpmick" path="res://Art/256/ball.png" id="2_s5ji3"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e6s6k"]
+font_size = 19
+font_color = Color(0, 0, 0, 1)
+
+[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_closeButton")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f2eg1")
+_closeButton = NodePath("Button")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=327987419]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_s5ji3")
+
+[node name="Label" type="Label" parent="." unique_id=1491790878]
+layout_mode = 0
+offset_left = 187.0
+offset_top = 148.0
+offset_right = 409.0
+offset_bottom = 175.0
+text = "Here will be the settings"
+label_settings = SubResource("LabelSettings_e6s6k")
+
+[node name="Button" type="Button" parent="." unique_id=516525753]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -56.405
+offset_right = 48.0
+offset_bottom = -25.404999
+grow_horizontal = 2
+grow_vertical = 0
+text = "Close
+"

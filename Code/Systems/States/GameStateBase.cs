@@ -35,6 +35,7 @@ namespace GA.GameProgramming.State
         private Node _scene = null;
         protected GameStateBase()
         {
+
             // Preload the scene file and cache the result.
             // Makes loading states a bit faster sinche they are already in memory.
             _sceneResource = GD.Load<PackedScene>(ScenePath);
@@ -42,6 +43,8 @@ namespace GA.GameProgramming.State
             {
                 GD.PrintErr($"Failed to load scene resource for state {StateType} at path {ScenePath}");
             }
+            // GameStateBase constructor, after GD.Load
+            GD.Print($"[{StateType}] scene loaded: {_sceneResource != null} ({ScenePath})");
         }
 
         protected bool AddTargetState(GameStateType gameStateType)
