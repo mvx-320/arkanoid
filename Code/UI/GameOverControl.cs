@@ -10,16 +10,34 @@ namespace GA.GameProgramming
 
         public override void _EnterTree()
         {
-            _retryButton.Pressed += OnRetryPressed;
-            _mainMenuButton.Pressed += OnMainMenuPressed;
-            _quitButton.Pressed += OnQuitPressed;
+            if (_retryButton != null)
+            {
+                _retryButton.Pressed += OnRetryPressed;
+            }
+            if (_mainMenuButton != null)
+            {
+                _mainMenuButton.Pressed += OnMainMenuPressed;
+            }
+            if (_quitButton != null)
+            {
+                _quitButton.Pressed += OnQuitPressed;
+            }
         }
 
         public override void _ExitTree()
         {
-            _retryButton.Pressed -= OnRetryPressed;
-            _mainMenuButton.Pressed -= OnMainMenuPressed;
-            _quitButton.Pressed -= OnQuitPressed;
+            if (_retryButton != null)
+            {
+                _retryButton.Pressed -= OnRetryPressed;
+            }
+            if (_mainMenuButton != null)
+            {
+                _mainMenuButton.Pressed -= OnMainMenuPressed;
+            }
+            if (_quitButton != null)
+            {
+                _quitButton.Pressed -= OnQuitPressed;
+            }
         }
 
         private void OnRetryPressed()

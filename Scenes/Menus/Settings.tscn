@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://ip1dlv47fyrq"]
 
 [ext_resource type="Script" uid="uid://brja2jsk42sc1" path="res://Code/UI/SettingsControl.cs" id="1_f2eg1"]
-[ext_resource type="Texture2D" uid="uid://cn2iutajpmick" path="res://Art/256/ball.png" id="2_s5ji3"]
+[ext_resource type="PackedScene" uid="uid://brgpl5x0q7u02" path="res://Scenes/UI/AudioControl.tscn" id="2_0le60"]
+[ext_resource type="Texture2D" uid="uid://cx7aed3nw5rl6" path="res://Art/32/block.png" id="2_s5ji3"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6s6k"]
-font_size = 19
-font_color = Color(0, 0, 0, 1)
+font_size = 21
 
-[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_closeButton")]
+[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton", "_masterAudioControl", "_musicAudioControl", "_sfxAudioControl")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,38 +16,136 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f2eg1")
-_closeButton = NodePath("Button")
+_saveButton = NodePath("Background/HBoxContainer/Save")
+_cancelButton = NodePath("Background/HBoxContainer/Cancel")
+_okButton = NodePath("Background/HBoxContainer/Ok")
+_masterAudioControl = NodePath("Background/VBoxContainer/MasterAudioControl")
+_musicAudioControl = NodePath("Background/VBoxContainer/MusicAudioControl")
+_sfxAudioControl = NodePath("Background/VBoxContainer/SfxAudioControl")
+_masterBusName = "Master"
+_musicBusName = "Music"
+_sfxBusName = "SFX"
+_masterDisplayName = "Master Volume"
+_musicDisplayName = "Music Volume"
+_sfxDisplayName = "SFX Volume"
 
-[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=327987419]
+[node name="Background" type="NinePatchRect" parent="." unique_id=327987419]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 10.0
+offset_right = -50.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_s5ji3")
+region_rect = Rect2(0, 0, 64, 32)
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
 
-[node name="Label" type="Label" parent="." unique_id=1491790878]
-layout_mode = 0
-offset_left = 187.0
-offset_top = 148.0
-offset_right = 409.0
-offset_bottom = 175.0
-text = "Here will be the settings"
-label_settings = SubResource("LabelSettings_e6s6k")
-
-[node name="Button" type="Button" parent="." unique_id=516525753]
+[node name="Headline" type="Label" parent="Background" unique_id=1491790878]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
+offset_left = -111.0
+offset_top = 9.56
+offset_right = 111.0
+offset_bottom = 36.560005
+grow_horizontal = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_e6s6k")
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background" unique_id=1234648667]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 10.0
+offset_top = -129.0
+offset_right = -10.0
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/VBoxContainer" unique_id=2069287618]
+layout_mode = 2
+text = "Audio"
+horizontal_alignment = 1
+
+[node name="MasterAudioControl" parent="Background/VBoxContainer" unique_id=1967995300 instance=ExtResource("2_0le60")]
+layout_mode = 2
+
+[node name="MusicAudioControl" parent="Background/VBoxContainer" unique_id=1045386939 instance=ExtResource("2_0le60")]
+layout_mode = 2
+
+[node name="SfxAudioControl" parent="Background/VBoxContainer" unique_id=2075737335 instance=ExtResource("2_0le60")]
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Background" unique_id=706085548]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 10.0
+offset_top = -32.714996
+offset_right = -10.0
+offset_bottom = 61.284973
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Background/VBoxContainer2" unique_id=2046613559]
+layout_mode = 2
+text = "Video"
+horizontal_alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="Background/VBoxContainer2" unique_id=1129952427]
+layout_mode = 2
+size_flags_horizontal = 4
+selected = 0
+item_count = 3
+popup/item_0/text = "640 x 360"
+popup/item_0/id = 0
+popup/item_1/text = "1280 x 720"
+popup/item_1/id = 1
+popup/item_2/text = "1920 x 1080"
+popup/item_2/id = 2
+
+[node name="CheckBox" type="CheckBox" parent="Background/VBoxContainer2" unique_id=997172724]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Full Screen"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background" unique_id=847708264]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -48.0
-offset_top = -56.405
-offset_right = 48.0
-offset_bottom = -25.404999
+offset_left = 10.0
+offset_top = -37.0
+offset_right = -10.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Close
+alignment = 1
+
+[node name="Cancel" type="Button" parent="Background/HBoxContainer" unique_id=516525753]
+layout_mode = 2
+text = "Cancel
 "
+
+[node name="Save" type="Button" parent="Background/HBoxContainer" unique_id=155119465]
+layout_mode = 2
+text = "Save"
+
+[node name="Ok" type="Button" parent="Background/HBoxContainer" unique_id=123541718]
+layout_mode = 2
+text = "Ok"

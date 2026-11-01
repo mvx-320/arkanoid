@@ -50,8 +50,10 @@ namespace GA.GameProgramming
 			new InGameState(),
 			new SettingsState(),
 			new GameOverState(),
+			new PauseState(),
 		};
 
+		private GameStateBase _nextState = null;
   
 		// GameStateBase mainMenu = GetState(GameStateTypeMainMenu
 		public Stack<GameStateBase> LoadedStates { get; private set; } = new Stack<GameStateBase>();
@@ -108,6 +110,9 @@ namespace GA.GameProgramming
 			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
 			mainMenu.OnEnter();
 			LoadedStates.Push(mainMenu);
+
+			// TODO: Don't call this when loading the game from a save file.
+			// StartNewGame();
 		}
 
 		/// <summary>
@@ -155,9 +160,33 @@ namespace GA.GameProgramming
 				return false;
 			}
 
-			if (nextState.IsAdditive)
+			_nextState = nextState;
+
+			CallDeferred(nameof(DelayChangeState), force);
+			// if (nextState.IsAdditive)
+			// {
+			// 	// The new state is shown on top of the surrent one, which stays loaded.
+			// 	ActiveState?.OnExit(keepLoaded: true);
+			// }
+			// else
+			// {
+			// 	while (LoadedStates.Count > 0)
+			// 	{
+			// 		GameStateBase poppedState = LoadedStates.Pop();
+			// 		poppedState.OnExit(keepLoaded: false);
+			// 	}
+			// }
+
+			// nextState.OnEnter(force);
+			// LoadedStates.Push(nextState);
+
+			return true;
+		}
+
+		private void DelayChangeState(bool force)
+		{
+			if (_nextState.IsAdditive)
 			{
-				// The new state is shown on top of the surrent one, which stays loaded.
 				ActiveState?.OnExit(keepLoaded: true);
 			}
 			else
@@ -169,10 +198,10 @@ namespace GA.GameProgramming
 				}
 			}
 
-			nextState.OnEnter(force);
-			LoadedStates.Push(nextState);
+			LoadedStates.Push(_nextState);
+			_nextState.OnEnter(force);
 
-			return true;
+			_nextState = null;
 		}
 
 		/// <summary>
@@ -200,14 +229,15 @@ namespace GA.GameProgramming
 
 		public bool StartNewGame()
 		{
-			Score = 0;
-			Lives = Config.StartLives;
 
 			if (!ChangeState(GameStateType.InGame, force: true))
 			{
 				GD.PushError("Failed to start a new game.");
 				return false;
 			}
+
+			Score = 0;
+			Lives = Config.StartLives;
 
 			return true;
 		}

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ccfwg1gqrbnow"]
 
-[ext_resource type="Script" uid="uid://34ew03x7mkdv" path="res://Code/Level.cs" id="1_etd3f"]
+[ext_resource type="Script" uid="uid://bda6ymocerqvj" path="res://Code/Level.cs" id="1_etd3f"]
 [ext_resource type="Resource" uid="uid://b0iv1jkuayi01" path="res://Data/Level1Layout.tres" id="2_d3u4r"]
 [ext_resource type="PackedScene" uid="uid://c2p6a6wv3so3g" path="res://Scenes/Characters/Paddle.tscn" id="3_y1810"]
 [ext_resource type="PackedScene" uid="uid://cj4xlm3w0nfq6" path="res://Scenes/Characters/Ball.tscn" id="4_vkf7a"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://1q61wr6k5ocm" path="res://Art/32/horizontal.png" id="6_3jhef"]
 [ext_resource type="Script" uid="uid://dvefnpwe43s2f" path="res://Code/DeathZone.cs" id="7_flwvg"]
 [ext_resource type="Texture2D" uid="uid://ctcm7cou67ome" path="res://Art/32/corner.png" id="8_a1gik"]
+[ext_resource type="Script" uid="uid://bwmhbi60ufh2q" path="res://Code/UI/LevelUi.cs" id="9_d3u4r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e6s6k"]
 size = Vector2(32, 296)
@@ -104,3 +105,26 @@ texture = ExtResource("8_a1gik")
 [node name="BottomRight" type="Sprite2D" parent="Bounds" unique_id=1682273210]
 position = Vector2(624, 344)
 texture = ExtResource("8_a1gik")
+
+[node name="LevelUI" type="CanvasLayer" parent="." unique_id=1818056197 node_paths=PackedStringArray("_scoreLabel", "_livesLabel")]
+script = ExtResource("9_d3u4r")
+_scoreLabel = NodePath("Score")
+_livesLabel = NodePath("Lives")
+
+[node name="Lives" type="Label" parent="LevelUI" unique_id=1497716485]
+offset_left = 37.0
+offset_top = 38.0
+offset_right = 105.0
+offset_bottom = 61.0
+text = "Lives: XX"
+
+[node name="Score" type="Label" parent="LevelUI" unique_id=2075058699]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -155.0
+offset_top = 37.0
+offset_right = -37.0
+offset_bottom = 60.0
+grow_horizontal = 0
+text = "Score: YYYYYYY"

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://brgpl5x0q7u02"]
+
+[ext_resource type="Script" uid="uid://4e7p57glwvjn" path="res://Code/UI/AudioControl.cs" id="1_3axt6"]
+
+[node name="AudioControl" type="HBoxContainer" unique_id=1967995300 node_paths=PackedStringArray("_volumeSlider", "_nameLabel", "_volumeLabel")]
+script = ExtResource("1_3axt6")
+_volumeSlider = NodePath("HSlider")
+_nameLabel = NodePath("Description")
+_volumeLabel = NodePath("Value")
+
+[node name="Description" type="Label" parent="." unique_id=509750020]
+layout_mode = 2
+text = "Audio Bus"
+
+[node name="HSlider" type="HSlider" parent="." unique_id=598511082]
+layout_mode = 2
+size_flags_horizontal = 3
+accessibility_name = "VolumeSlider"
+max_value = 1.0
+step = 0.01
+
+[node name="Value" type="Label" parent="." unique_id=1585110357]
+layout_mode = 2
+text = "100"

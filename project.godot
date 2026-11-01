@@ -36,8 +36,14 @@ folder_colors={
 "res://Art/": "red",
 "res://Code/": "orange",
 "res://Data/": "yellow",
-"res://Scenes/": "purple"
+"res://Scenes/": "purple",
+"res://UI/": "teal"
 }
+
+[gui]
+
+theme/custom="uid://mfc2ysb0gfr0"
+theme/custom_font="uid://d1x78pxj3vp01"
 
 [input]
 
