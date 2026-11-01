@@ -61,16 +61,16 @@ namespace GA.GameProgramming.UI
 			SetFullscreen(isFullscreen);
 		}
 
-		// public void SyncToWindow(Vector2I actualSize)
-		// {
-		// 	if (_resolutionOption == null) { return; }
+		public void SyncToWindow(Vector2I actualSize)
+		{
+			if (_resolutionOption == null) { return; }
 
-		// 	int index = _resolutions.IndexOf(actualSize);
-		// 	if (index >= 0)
-		// 	{
-		// 		_resolutionOption.Select(index);
-		// 	}
-		// }
+			int index = _resolutions.IndexOf(actualSize);
+			if (index >= 0)
+			{
+				_resolutionOption.Select(index);
+			}
+		}
 
 		private void FillResolutions(Vector2I designSize, Vector2I currentSize)
 		{

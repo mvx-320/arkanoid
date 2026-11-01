@@ -38,16 +38,17 @@ namespace GA.GameProgramming.UI
             {
                 _musicAudioControl.VolumeChanged += OnVolumeChanged;
             }
-            
             if (_sfxAudioControl != null)
             {
                 _sfxAudioControl.VolumeChanged += OnVolumeChanged;
             }
+
             if (_resolutionControl != null)
             {
                 _resolutionControl.ResolutionChanged += OnResolutionChanged;
                 _resolutionControl.FullscreenToggled += OnFullscreenToggled;
             }
+            GetWindow().SizeChanged += OnWindowSizeChanged;
 
             _saveButton.Pressed += Save;
             _cancelButton.Pressed += Close;
@@ -57,13 +58,6 @@ namespace GA.GameProgramming.UI
         }
         public override void _ExitTree()
         {
-            // _closeButton.Pressed -= OnClosePressed;
-            _saveButton.Pressed -= Save;
-            _cancelButton.Pressed -= Close;
-
-            _okButton.Pressed -= Save;
-            _okButton.Pressed -= Close;
-
             if (_masterAudioControl != null)
             {
             _masterAudioControl.VolumeChanged -= OnVolumeChanged;
@@ -76,11 +70,19 @@ namespace GA.GameProgramming.UI
             {
                 _sfxAudioControl.VolumeChanged -= OnVolumeChanged;
             }
+
             if (_resolutionControl != null)
             {
                 _resolutionControl.ResolutionChanged -= OnResolutionChanged;
                 _resolutionControl.FullscreenToggled -= OnFullscreenToggled;
             }
+            GetWindow().SizeChanged -= OnWindowSizeChanged;
+
+            _saveButton.Pressed -= Save;
+            _cancelButton.Pressed -= Close;
+
+            _okButton.Pressed -= Save;
+            _okButton.Pressed -= Close;
         }
 
         public override void _Ready()
@@ -130,27 +132,51 @@ namespace GA.GameProgramming.UI
 
         private void OnResolutionChanged(Vector2I resolution)
         {
-            DisplayServer.WindowSetSize(resolution);
+            // DisplayServer.WindowSetSize(resolution);
 
-            int screen = DisplayServer.WindowGetCurrentScreen();
-            Vector2I screenPosition = DisplayServer.ScreenGetPosition(screen);
-            Vector2I screenSize = DisplayServer.ScreenGetSize(screen);
-            DisplayServer.WindowSetPosition(screenPosition + (screenSize - resolution) / 2);
+            // int screen = DisplayServer.WindowGetCurrentScreen();
+            // Vector2I screenPosition = DisplayServer.ScreenGetPosition(screen);
+            // Vector2I screenSize = DisplayServer.ScreenGetSize(screen);
+            // DisplayServer.WindowSetPosition(screenPosition + (screenSize - resolution) / 2);
+            Window window = GetWindow();
+            window.Size = resolution;
+            window.MoveToCenter();
         }
 
-        private void OnFullscreenToggled(bool fullscreen)
+        private async void OnFullscreenToggled(bool fullscreen)
         {
+            // if (fullscreen)
+            // {
+            //     GetWindow().Mode = Window.ModeEnum.Fullscreen;
+            // }
+            // else
+            // {
+            //     GetWindow().Mode = Window.ModeEnum.Windowed;
+            //     OnResolutionChanged(_resolutionControl.SelectedResolution);
+            // }
+            Window window = GetWindow();
+
             if (fullscreen)
             {
-                GetWindow().Mode = Window.ModeEnum.Fullscreen;
+                window.Mode = Window.ModeEnum.Fullscreen;
+                return;
             }
-            else
-            {
-                GetWindow().Mode = Window.ModeEnum.Windowed;
-                OnResolutionChanged(_resolutionControl.SelectedResolution);
-            }
+
+            window.Mode = Window.ModeEnum.Windowed;
+            // Get out of fullscreen is executed asynchronously.
+            // We wait a frame, otherwise the restore overwrites the size we set.
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+            OnResolutionChanged(_resolutionControl.SelectedResolution);
         }
 
+        private void OnWindowSizeChanged()
+        {
+            Window window = GetWindow();
+            if (_resolutionControl != null && window.Mode == Window.ModeEnum.Windowed)
+            {
+                _resolutionControl.SyncToWindow(window.Size);
+            }
+        }
         public void Close()
         {
             if (!GameManager.Instance.ActivatePreviousState())
