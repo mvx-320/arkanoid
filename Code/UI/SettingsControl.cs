@@ -26,6 +26,8 @@ namespace GA.GameProgramming.UI
         [Export] private string _resolutionDisplayName = null;
         #endregion Video
         private static readonly Vector2I DesignResolution = new(Config.MinResolutionWidth, Config.MinResolutionHeight);
+        private Vector2I _windowedResolution = DesignResolution;
+        private bool _changingMode = false;
 
         public override void _EnterTree()
         {
@@ -107,6 +109,8 @@ namespace GA.GameProgramming.UI
                 bool isFullscreen = window.Mode == Window.ModeEnum.Fullscreen;
 
                 _resolutionControl.Setup(_resolutionDisplayName, DesignResolution, window.Size, isFullscreen);
+
+                _windowedResolution = isFullscreen ? DesignResolution : window.Size;
             }
         }
 
@@ -130,47 +134,87 @@ namespace GA.GameProgramming.UI
             AudioServer.SetBusVolumeDb(audioBusIndex, decibel);
         }
 
-        private void OnResolutionChanged(Vector2I resolution)
+        private async void OnResolutionChanged(Vector2I resolution)
         {
+            _windowedResolution = resolution;
+
             // DisplayServer.WindowSetSize(resolution);
 
             // int screen = DisplayServer.WindowGetCurrentScreen();
             // Vector2I screenPosition = DisplayServer.ScreenGetPosition(screen);
             // Vector2I screenSize = DisplayServer.ScreenGetSize(screen);
             // DisplayServer.WindowSetPosition(screenPosition + (screenSize - resolution) / 2);
+
             Window window = GetWindow();
             window.Size = resolution;
             window.MoveToCenter();
+
+            // Force the content scale to be recalculated for the new window size
+            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+            window.ContentScaleSize = DesignResolution;
+
+            GD.Print($"{GetWindow().Size}, {DisplayServer.WindowGetSize()}, {DisplayServer.WindowGetPosition()}");
         }
 
         private async void OnFullscreenToggled(bool fullscreen)
         {
-            // if (fullscreen)
-            // {
-            //     GetWindow().Mode = Window.ModeEnum.Fullscreen;
-            // }
-            // else
-            // {
-            //     GetWindow().Mode = Window.ModeEnum.Windowed;
-            //     OnResolutionChanged(_resolutionControl.SelectedResolution);
-            // }
             Window window = GetWindow();
+            _changingMode = true;
 
             if (fullscreen)
             {
+                // window.Mode = Window.ModeEnum.Fullscreen;
+                
+                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                    
+                // // Force the content scale to be recalculated for the new window state
+                // window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
+                // window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
+
+                 // A window as big as the screen causes no resize when entering fullscreen,
+
+                // so the content scale is not recalculated. Shrink it first.
+                int screen = DisplayServer.WindowGetCurrentScreen();
+                if (DisplayServer.WindowGetSize() == DisplayServer.ScreenGetSize(screen))
+                {
+                    DisplayServer.WindowSetSize(DesignResolution);
+                    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                }
+
                 window.Mode = Window.ModeEnum.Fullscreen;
-                return;
+            }
+            else
+            {
+                window.Mode = Window.ModeEnum.Windowed;
+
+                // Let the window finish restoring itself first, then apply our own value
+                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+
+                OnResolutionChanged(_windowedResolution);
+                _resolutionControl.SyncToWindow(_windowedResolution);
             }
 
-            window.Mode = Window.ModeEnum.Windowed;
-            // Get out of fullscreen is executed asynchronously.
-            // We wait a frame, otherwise the restore overwrites the size we set.
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-            OnResolutionChanged(_resolutionControl.SelectedResolution);
+            _changingMode = false;
+            // if (fullscreen)
+            // {
+            //     window.Mode = Window.ModeEnum.Fullscreen;
+            //     return;
+            // }
+
+            // window.Mode = Window.ModeEnum.Windowed;
+            // // Get out of fullscreen is executed asynchronously.
+            // // We wait a frame, otherwise the restore overwrites the size we set.
+            // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+            // OnResolutionChanged(_resolutionControl.SelectedResolution);
         }
 
         private void OnWindowSizeChanged()
         {
+            if (_changingMode) { return; }
+
             Window window = GetWindow();
             if (_resolutionControl != null && window.Mode == Window.ModeEnum.Windowed)
             {
