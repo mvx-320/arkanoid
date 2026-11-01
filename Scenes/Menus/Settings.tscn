@@ -4,11 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://brgpl5x0q7u02" path="res://Scenes/UI/AudioControl.tscn" id="2_0le60"]
 [ext_resource type="Texture2D" uid="uid://cx7aed3nw5rl6" path="res://Art/32/block.png" id="2_s5ji3"]
 [ext_resource type="Script" uid="uid://hkcw0s4ktffy" path="res://Code/UI/ResolutionControl.cs" id="4_ofyyl"]
+[ext_resource type="Script" uid="uid://b50iedwabvbp8" path="res://Code/Systems/States/StateDependentNode.cs" id="5_4mfhd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6s6k"]
 font_size = 21
 
-[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton", "_masterAudioControl", "_musicAudioControl", "_sfxAudioControl", "_resolutionControl")]
+[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_masterAudioControl", "_musicAudioControl", "_sfxAudioControl", "_resolutionControl", "_mainMenuButton", "_cancelButton", "_saveButton", "_okButton")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -17,9 +18,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_f2eg1")
-_saveButton = NodePath("Background/HBoxContainer/Save")
-_cancelButton = NodePath("Background/HBoxContainer/Cancel")
-_okButton = NodePath("Background/HBoxContainer/Ok")
 _masterAudioControl = NodePath("Background/VBoxContainer/MasterAudioControl")
 _musicAudioControl = NodePath("Background/VBoxContainer/MusicAudioControl")
 _sfxAudioControl = NodePath("Background/VBoxContainer/SfxAudioControl")
@@ -31,6 +29,10 @@ _musicDisplayName = "Music Volume"
 _sfxDisplayName = "SFX Volume"
 _resolutionControl = NodePath("Background/VBoxContainer2")
 _resolutionDisplayName = "Video"
+_mainMenuButton = NodePath("Background/HBoxContainer/MainMenu")
+_cancelButton = NodePath("Background/HBoxContainer/Cancel")
+_saveButton = NodePath("Background/HBoxContainer/Save")
+_okButton = NodePath("Background/HBoxContainer/Ok")
 
 [node name="Background" type="NinePatchRect" parent="." unique_id=327987419]
 layout_mode = 1
@@ -143,6 +145,16 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
+
+[node name="MainMenu" type="Button" parent="Background/HBoxContainer" unique_id=1856411382]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="DependentNode" type="Control" parent="Background/HBoxContainer/MainMenu" unique_id=1477657882]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("5_4mfhd")
 
 [node name="Cancel" type="Button" parent="Background/HBoxContainer" unique_id=516525753]
 layout_mode = 2

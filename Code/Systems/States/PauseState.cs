@@ -15,11 +15,15 @@ namespace GA.GameProgramming.State
         public override void OnEnter(bool force)
         {
             base.OnEnter(force);
+
+            // Pause game when entering this state.
             GameManager.Instance.SceneTree.Paused = true;
         }
         public override void OnExit(bool keepLoaded)
         {
             base.OnExit(keepLoaded);
+
+            // Resume the game when the state is deactivated.
             GameManager.Instance.SceneTree.Paused = false;
         }
     }

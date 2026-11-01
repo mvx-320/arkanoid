@@ -9,6 +9,7 @@ namespace GA.GameProgramming
 		public const float MinSpeed = 0f;
 		public const int MaxLives = 99;
 		public const int StartLives = 3;
+		public const string PauseActionName = "Pause";
 		public const int MinResolutionWidth = 640;
 		public const int MinResolutionHeight = 360;
 	}

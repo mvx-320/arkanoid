@@ -3,10 +3,6 @@ namespace GA.GameProgramming.UI
 {
     public partial class SettingsControl : Control
     {
-        // [Export] private Button _closeButton = null;
-        [Export] private Button _saveButton = null;
-        [Export] private Button _cancelButton = null;
-        [Export] private Button _okButton = null;
 
         #region Audio
         [Export] private AudioControl _masterAudioControl = null;
@@ -25,6 +21,12 @@ namespace GA.GameProgramming.UI
         [Export] private ResolutionControl _resolutionControl = null;
         [Export] private string _resolutionDisplayName = null;
         #endregion Video
+        #region Buttons
+        [Export] private Button _mainMenuButton = null;
+        [Export] private Button _cancelButton = null;
+        [Export] private Button _saveButton = null;
+        [Export] private Button _okButton = null;
+        #endregion Buttons
         private static readonly Vector2I DesignResolution = new(Config.MinResolutionWidth, Config.MinResolutionHeight);
         private Vector2I _windowedResolution = DesignResolution;
         private bool _changingMode = false;
@@ -52,6 +54,10 @@ namespace GA.GameProgramming.UI
             }
             GetWindow().SizeChanged += OnWindowSizeChanged;
 
+            if (_mainMenuButton != null)
+            {
+                _mainMenuButton.Pressed += MainMenu;
+            }
             _saveButton.Pressed += Save;
             _cancelButton.Pressed += Close;
 
@@ -80,6 +86,10 @@ namespace GA.GameProgramming.UI
             }
             GetWindow().SizeChanged -= OnWindowSizeChanged;
 
+            if (_mainMenuButton != null)
+            {
+                _mainMenuButton.Pressed -= MainMenu;
+            }
             _saveButton.Pressed -= Save;
             _cancelButton.Pressed -= Close;
 
@@ -219,6 +229,13 @@ namespace GA.GameProgramming.UI
             if (_resolutionControl != null && window.Mode == Window.ModeEnum.Windowed)
             {
                 _resolutionControl.SyncToWindow(window.Size);
+            }
+        }
+        public void MainMenu()
+        {
+            if (!GameManager.Instance.ChangeState(GameStateType.MainMenu))
+            {
+                GD.PushError("Failed to change state to MainMenu.");
             }
         }
         public void Close()
