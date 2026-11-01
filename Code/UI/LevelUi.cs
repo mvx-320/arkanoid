@@ -8,6 +8,11 @@ namespace GA.GameProgramming.UI
         [Export] private Label _scoreLabel = null;
         [Export] private Label _livesLabel = null;
 
+        public override void _Ready()
+        {
+            OnScoreChanged(GameManager.Instance.Score);
+            OnLivesChanged(GameManager.Instance.Lives);
+        }
         public override void _EnterTree()
         {
             GameManager.Instance.ScoreChanged += OnScoreChanged;

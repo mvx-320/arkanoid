@@ -112,7 +112,8 @@ namespace GA.GameProgramming
 			LoadedStates.Push(mainMenu);
 
 			// TODO: Don't call this when loading the game from a save file.
-			// StartNewGame();
+			Score = 0;
+			Lives = Config.StartLives;
 		}
 
 		/// <summary>
@@ -238,9 +239,18 @@ namespace GA.GameProgramming
 
 			Score = 0;
 			Lives = Config.StartLives;
+			// The level scene is added deferred in OnEnter. A deferred call queued
+			// after it runs once the scene (and its HUD) is in the tree.
+			// Callable.From(ResetGameData).CallDeferred();
 
 			return true;
 		}
+
+		// private void ResetGameData()
+		// {
+		// 	Score = 0;
+		// 	Lives = Config.StartLives;
+		// }
 
 		public void AddScore(int scoreToAdd)
 		{

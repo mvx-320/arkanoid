@@ -26,7 +26,7 @@ namespace GA.GameProgramming
 
         private void OnNewGamePressed()
         {
-            if (!GameManager.Instance.ChangeState(GameStateType.InGame))
+            if (!GameManager.Instance.StartNewGame())
             {
                 GD.PushError("Failed to change state to InGame.");
             }   
