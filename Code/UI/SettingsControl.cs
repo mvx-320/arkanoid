@@ -22,19 +22,13 @@ namespace GA.GameProgramming.UI
         [Export] private string _sfxDisplayName = null;
         #endregion Audio
         #region Video
-        [Export] private OptionButton _resolutionOptionButton = null;
-        [Export] private CheckBox _fullscreenCheckBox = null;
+        [Export] private ResolutionControl _resolutionControl = null;
+        [Export] private string _resolutionDisplayName = null;
         #endregion Video
+        private static readonly Vector2I DesignResolution = new(Config.MinResolutionWidth, Config.MinResolutionHeight);
 
         public override void _EnterTree()
         {
-            // ProcessMode = ProcessModeEnum.Always;
-            // _closeButton.Pressed += OnClosePressed;
-            _saveButton.Pressed += Save;
-            _cancelButton.Pressed += Close;
-
-            _okButton.Pressed += Save;
-            _okButton.Pressed += Close;
 
             if (_masterAudioControl != null)
             {
@@ -44,13 +38,22 @@ namespace GA.GameProgramming.UI
             {
                 _musicAudioControl.VolumeChanged += OnVolumeChanged;
             }
+            
             if (_sfxAudioControl != null)
             {
                 _sfxAudioControl.VolumeChanged += OnVolumeChanged;
             }
+            if (_resolutionControl != null)
+            {
+                _resolutionControl.ResolutionChanged += OnResolutionChanged;
+                _resolutionControl.FullscreenToggled += OnFullscreenToggled;
+            }
 
-            // _resolutionOptionButton.ItemSelected += OnResolutionSelected;
-            // _fullscreenCheckBox.Toggled += OnFullscreenToggled;
+            _saveButton.Pressed += Save;
+            _cancelButton.Pressed += Close;
+
+            _okButton.Pressed += Save;
+            _okButton.Pressed += Close;
         }
         public override void _ExitTree()
         {
@@ -73,6 +76,11 @@ namespace GA.GameProgramming.UI
             {
                 _sfxAudioControl.VolumeChanged -= OnVolumeChanged;
             }
+            if (_resolutionControl != null)
+            {
+                _resolutionControl.ResolutionChanged -= OnResolutionChanged;
+                _resolutionControl.FullscreenToggled -= OnFullscreenToggled;
+            }
         }
 
         public override void _Ready()
@@ -90,6 +98,13 @@ namespace GA.GameProgramming.UI
             if (_sfxAudioControl != null)
             {
                 SetUpAudioControl(_sfxAudioControl, _sfxBusName, _sfxDisplayName);
+            }
+            if (_resolutionControl != null)
+            {
+                Window window = GetWindow();
+                bool isFullscreen = window.Mode == Window.ModeEnum.Fullscreen;
+
+                _resolutionControl.Setup(_resolutionDisplayName, DesignResolution, window.Size, isFullscreen);
             }
         }
 
@@ -113,15 +128,28 @@ namespace GA.GameProgramming.UI
             AudioServer.SetBusVolumeDb(audioBusIndex, decibel);
         }
 
-        // private void OnResolutionSelected(int index)
-        // {
+        private void OnResolutionChanged(Vector2I resolution)
+        {
+            DisplayServer.WindowSetSize(resolution);
 
-        // }
+            int screen = DisplayServer.WindowGetCurrentScreen();
+            Vector2I screenPosition = DisplayServer.ScreenGetPosition(screen);
+            Vector2I screenSize = DisplayServer.ScreenGetSize(screen);
+            DisplayServer.WindowSetPosition(screenPosition + (screenSize - resolution) / 2);
+        }
 
-        // private void OnFullscreenToggled(bool isChecked)
-        // {
-        //     // GetWindow().Mode = isChecked ? Window.ModeEnum.Fullscreen : Window.ModeEnum.Windowed;
-        // }
+        private void OnFullscreenToggled(bool fullscreen)
+        {
+            if (fullscreen)
+            {
+                GetWindow().Mode = Window.ModeEnum.Fullscreen;
+            }
+            else
+            {
+                GetWindow().Mode = Window.ModeEnum.Windowed;
+                OnResolutionChanged(_resolutionControl.SelectedResolution);
+            }
+        }
 
         public void Close()
         {

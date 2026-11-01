@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://brja2jsk42sc1" path="res://Code/UI/SettingsControl.cs" id="1_f2eg1"]
 [ext_resource type="PackedScene" uid="uid://brgpl5x0q7u02" path="res://Scenes/UI/AudioControl.tscn" id="2_0le60"]
 [ext_resource type="Texture2D" uid="uid://cx7aed3nw5rl6" path="res://Art/32/block.png" id="2_s5ji3"]
+[ext_resource type="Script" uid="uid://hkcw0s4ktffy" path="res://Code/UI/ResolutionControl.cs" id="4_ofyyl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6s6k"]
 font_size = 21
 
-[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton", "_masterAudioControl", "_musicAudioControl", "_sfxAudioControl")]
+[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_saveButton", "_cancelButton", "_okButton", "_masterAudioControl", "_musicAudioControl", "_sfxAudioControl", "_resolutionControl")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -28,6 +29,8 @@ _sfxBusName = "SFX"
 _masterDisplayName = "Master Volume"
 _musicDisplayName = "Music Volume"
 _sfxDisplayName = "SFX Volume"
+_resolutionControl = NodePath("Background/VBoxContainer2")
+_resolutionDisplayName = "Video"
 
 [node name="Background" type="NinePatchRect" parent="." unique_id=327987419]
 layout_mode = 1
@@ -88,7 +91,7 @@ layout_mode = 2
 [node name="SfxAudioControl" parent="Background/VBoxContainer" unique_id=2075737335 instance=ExtResource("2_0le60")]
 layout_mode = 2
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Background" unique_id=706085548]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Background" unique_id=706085548 node_paths=PackedStringArray("_nameLabel", "_resolutionOption", "_fullscreenCheckBox")]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -100,6 +103,10 @@ offset_right = -10.0
 offset_bottom = 61.284973
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_ofyyl")
+_nameLabel = NodePath("Label")
+_resolutionOption = NodePath("OptionButton")
+_fullscreenCheckBox = NodePath("CheckBox")
 
 [node name="Label" type="Label" parent="Background/VBoxContainer2" unique_id=2046613559]
 layout_mode = 2
