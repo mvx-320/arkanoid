@@ -188,7 +188,7 @@ namespace GA.GameProgramming.UI
                 int screen = DisplayServer.WindowGetCurrentScreen();
                 if (DisplayServer.WindowGetSize() == DisplayServer.ScreenGetSize(screen))
                 {
-                    DisplayServer.WindowSetSize(DesignResolution);
+                    // DisplayServer.WindowSetSize(DesignResolution);
                     await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
                     await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
                 }
@@ -204,7 +204,7 @@ namespace GA.GameProgramming.UI
                 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
                 OnResolutionChanged(_windowedResolution);
-                _resolutionControl.SyncToWindow(_windowedResolution);
+                // _resolutionControl.SyncToWindow(_windowedResolution);
             }
 
             _changingMode = false;
