@@ -61,6 +61,8 @@ namespace GA.GameProgramming
 		{
 			get { return LoadedStates.Count > 0 ? LoadedStates.Peek() : null; }
 		}
+
+		public Settings Settings { get; private set; } = null;
   
 		public int Score
 		{
@@ -114,6 +116,8 @@ namespace GA.GameProgramming
 			GameStateBase mainMenu = GetState(GameStateType.MainMenu);
 			mainMenu.OnEnter();
 			LoadedStates.Push(mainMenu);
+
+			Settings = new Settings();
 
 			// TODO: Don't call this when loading the game from a save file.
 			Score = 0;
@@ -258,7 +262,7 @@ namespace GA.GameProgramming
 
 		public void AddScore(int scoreToAdd)
 		{
-			if (scoreToAdd < 0) { return; }
+			if (scoreToAdd <= 0) { return; }
 
 			Score += scoreToAdd;
 		}

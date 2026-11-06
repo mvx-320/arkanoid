@@ -7,29 +7,73 @@ namespace GA.GameProgramming
         public const string SettingsFilePath = "user://settings.cfg";
         private SettingsData _data = null;
 
-        public static void ApplySettings(SettingsData data)
+        public SettingsData Data
+        {
+            get { return _data; }
+            set
+            {
+                _data = value;
+                ApplySettings(_data);
+            }
+        }
+
+        public Settings()
+        {
+            Data = Load();
+        }
+
+        public Settings(SettingsData data)
+        {
+            Data = data;
+        }
+
+        public static async void ApplySettings(SettingsData data)
         {
             AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Master"), data.MasterVolume);
             AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), data.MusicVolume);
             AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), data.SfxVolume);
 
-            DisplayServer.WindowSetSize(data.Resolution);
+            // From Sami
+            // DisplayServer.WindowSetSize(data.Resolution);
 
-            DisplayServer.WindowMode windowMode = data.Fullscreen
-                ? DisplayServer.WindowMode.Fullscreen
-                : DisplayServer.WindowMode.Windowed;
-            DisplayServer.WindowSetMode(windowMode);
+            // DisplayServer.WindowMode windowMode = data.Fullscreen
+            //     ? DisplayServer.WindowMode.Fullscreen
+            //     : DisplayServer.WindowMode.Windowed;
+            // DisplayServer.WindowSetMode(windowMode);
+
+            SceneTree tree = GameManager.Instance.GetTree();
+            Window window = tree.Root.GetWindow();
+
+            if (data.Fullscreen)
+            {
+                // int screen = DisplayServer.WindowGetCurrentScreen();
+                // if (DisplayServer.WindowGetSize() == DisplayServer.ScreenGetSize(screen))
+                // {
+                //     // window.Size = window.ContentScaleSize;
+                //     // await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+                //     // await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+                // }
+                window.Mode = Window.ModeEnum.Fullscreen;
+            }
+            else
+            {
+                window.Mode = Window.ModeEnum.Windowed;
+                await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+                await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+                window.Size = data.Resolution;
+                window.MoveToCenter();
+            }
         }
 
         public void Save()
         {
             ConfigFile settingsFile = new ConfigFile();
-            settingsFile.SetValue("Audio", "MasterVolume", _data.MasterVolume);
-            settingsFile.SetValue("Audio", "MusicVolume", _data.MusicVolume);
-            settingsFile.SetValue("Audio", "SfxVolume", _data.SfxVolume);
+            settingsFile.SetValue("Audio", "MasterVolume", Data.MasterVolume);
+            settingsFile.SetValue("Audio", "MusicVolume", Data.MusicVolume);
+            settingsFile.SetValue("Audio", "SfxVolume", Data.SfxVolume);
 
-            settingsFile.SetValue("Video", "Resolution", _data.Resolution);
-            settingsFile.SetValue("Video", "Fullscreen", _data.Fullscreen);
+            settingsFile.SetValue("Video", "Resolution", Data.Resolution);
+            settingsFile.SetValue("Video", "Fullscreen", Data.Fullscreen);
 
             settingsFile.Save(SettingsFilePath);
         }
@@ -37,16 +81,13 @@ namespace GA.GameProgramming
         //TODO: Return loaded data.
         public SettingsData Load()
         {
-            SettingsData result = null;
-
             ConfigFile savedSettings = new ConfigFile();
             Error readError = savedSettings.Load(SettingsFilePath);
             SettingsData defaultData = SettingsData.Default;
 
             if (readError != Error.Ok)
             {
-                result = defaultData;
-                return result;
+                return defaultData;
             }
 
             return new SettingsData()

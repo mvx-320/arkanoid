@@ -1,4 +1,5 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 namespace GA.GameProgramming.UI
@@ -30,6 +31,9 @@ namespace GA.GameProgramming.UI
         [Export] private Button _saveButton = null;
         [Export] private Button _okButton = null;
         #endregion Buttons
+        #region SettingsData
+        private SettingsData _data = null;
+        #endregion SettingsData
 
         public override void _EnterTree()
         {
@@ -99,9 +103,10 @@ namespace GA.GameProgramming.UI
             _okButton.Pressed -= Save;
             _okButton.Pressed -= Close;
         }
-
         public override void _Ready()
         {
+            _data = new SettingsData(GameManager.Instance.Settings.Data);
+
             // TODO: When settings data is implemented, read this from the data.
             // For now, let's query the volume from the AudioServer.
             if (_masterAudioControl != null)
@@ -117,13 +122,20 @@ namespace GA.GameProgramming.UI
                 SetUpAudioControl(_sfxAudioControl, _sfxBusName, _sfxDisplayName);
             }
         
-            InitializeResolutions();
+            InitializeResolutions(_data);
         }
 
-        private void InitializeResolutions()
+        private void InitializeResolutions(SettingsData data)
         {
             Vector2I viewPortSize = GameManager.MinWindowSize;
             Vector2I screenSize = DisplayServer.ScreenGetSize();
+
+            Resolution savedResolution = new Resolution()
+            {
+                Width = data.Resolution.X,
+                Height = data.Resolution.Y,
+            };
+
             int multiplyer = 1;
             int id = 0;
             int selected = 0;
@@ -138,6 +150,11 @@ namespace GA.GameProgramming.UI
                     Multiplyer = multiplyer,
                 };
 
+                if (resolution == savedResolution)
+                {
+                    selected = id;
+                }
+
                 _resolutions.Add(id, resolution);
 
                 _resolutionsButton.AddItem(resolution.ToString(), id);
@@ -145,10 +162,13 @@ namespace GA.GameProgramming.UI
                 id++;
             }
 
-            _resolutionsButton.Select(selected);
+            if (_resolutionsButton.GetItemCount() > 0)
+                _resolutionsButton.Select(selected);
+            else
+                GD.PushWarning("No resolutions were added to the resolution button. " +
+                "This may be due to the editor.");
 
-            DisplayServer.WindowMode windowMode = DisplayServer.WindowGetMode();
-            _fullscreenButton.ButtonPressed = false; // TODO: When settings data is implemented, read this from the data.
+            _fullscreenButton.ButtonPressed = data.Fullscreen;
 
             // Methods in methods bcs they are not neaded after Init, but a little unconventional
             static int GetWidth(Vector2I viewPortSize, int multiplier)
@@ -161,6 +181,7 @@ namespace GA.GameProgramming.UI
             }
         }
 
+        #region Audio
         private void SetUpAudioControl(AudioControl audioControl, string busName, string displayName)
         {
                 int audioBusIndex = AudioServer.GetBusIndex(busName);
@@ -178,22 +199,30 @@ namespace GA.GameProgramming.UI
                 return;
             }
 
-            AudioServer.SetBusVolumeDb(audioBusIndex, decibel);
-        }
+            switch (audioBus)
+            {
+                case "Master":
+                    _data.MasterVolume = decibel;
+                    break;
+                case "Music":
+                    _data.MusicVolume = decibel;
+                    break;
+                case "SFX":
+                    _data.SfxVolume = decibel;
+                    break;
+            }
 
-        private async void OnResolutionSelected(long index)
+            Settings.ApplySettings(_data);
+        }
+        #endregion Audio
+        #region Video
+        private void OnResolutionSelected(long index)
         {
             if (_resolutions.TryGetValue((int)index, out Resolution resolution))
             {
-                Window window = GetWindow();
-                window.Size = (Vector2I) resolution;
-                window.MoveToCenter();
-
-                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                window.ContentScaleSize = (Vector2I) resolution;
-                DisplayServer.WindowSetSize((Vector2I) resolution);
-
-                GD.Print($"{GetWindow().Size}, {DisplayServer.WindowGetSize()}, {DisplayServer.WindowGetPosition()}");
+                _data.Resolution = (Vector2I) resolution;
+                Settings.ApplySettings(_data);
+               // GD.Print($"{GetWindow().Size}, {DisplayServer.WindowGetSize()}, {DisplayServer.WindowGetPosition()}");
             }
             else
             {
@@ -201,34 +230,14 @@ namespace GA.GameProgramming.UI
             }
         }
 
-        private async void OnFullscreenToggled(bool fullscreen)
+        private void OnFullscreenToggled(bool fullscreen)
         {
-            Window window = GetWindow();
-
-            if (fullscreen)
-            {
-                int screen = DisplayServer.WindowGetCurrentScreen();
-                if (DisplayServer.WindowGetSize() == DisplayServer.ScreenGetSize(screen))
-                {
-                    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                    await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                }
-                window.Mode = Window.ModeEnum.Fullscreen;
-            }
-            else
-            {
-                window.Mode = Window.ModeEnum.Windowed;
-                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-
-                if (_resolutions.TryGetValue(_resolutionsButton.Selected, out Resolution resolution))
-                {
-                    window.Size = (Vector2I) resolution;
-                    window.MoveToCenter();
-                }
-            }
+            _data.Fullscreen = fullscreen;
+            _resolutionsButton.Disabled = fullscreen;
+            Settings.ApplySettings(_data);
         }
-
+        #endregion Video
+        #region Buttons
         public void MainMenu()
         {
             if (!GameManager.Instance.ChangeState(GameStateType.MainMenu))
@@ -238,15 +247,15 @@ namespace GA.GameProgramming.UI
         }
         public void Close()
         {
-            if (!GameManager.Instance.ActivatePreviousState())
-            {
-                GD.PushError("Failed to activate previous state.");
-            }
+            Settings.ApplySettings(GameManager.Instance.Settings.Data);
+            GameManager.Instance.ActivatePreviousState();
         }
         
         public void Save()
         {
-            GD.Print("Settings saved.");
+            GameManager.Instance.Settings.Data = _data;
+            GameManager.Instance.Settings.Save();
         }
+        #endregion Buttons
     }
 }
