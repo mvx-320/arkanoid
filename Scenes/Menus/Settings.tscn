@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://brja2jsk42sc1" path="res://Code/UI/SettingsControl.cs" id="1_f2eg1"]
 [ext_resource type="PackedScene" uid="uid://brgpl5x0q7u02" path="res://Scenes/UI/AudioControl.tscn" id="2_0le60"]
 [ext_resource type="Texture2D" uid="uid://cx7aed3nw5rl6" path="res://Art/32/block.png" id="2_s5ji3"]
-[ext_resource type="Script" uid="uid://hkcw0s4ktffy" path="res://Code/UI/ResolutionControl.cs" id="4_ofyyl"]
+[ext_resource type="Script" path="res://Code/UI/ResolutionControl.cs" id="4_ofyyl"]
 [ext_resource type="Script" uid="uid://b50iedwabvbp8" path="res://Code/Systems/States/StateDependentNode.cs" id="5_4mfhd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6s6k"]
 font_size = 21
 
-[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_masterAudioControl", "_musicAudioControl", "_sfxAudioControl", "_resolutionControl", "_mainMenuButton", "_cancelButton", "_saveButton", "_okButton")]
+[node name="Settings" type="Control" unique_id=369916294 node_paths=PackedStringArray("_masterAudioControl", "_musicAudioControl", "_sfxAudioControl", "_fullscreenButton", "_resolutionsButton", "_mainMenuButton", "_cancelButton", "_saveButton", "_okButton")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -27,8 +27,8 @@ _sfxBusName = "SFX"
 _masterDisplayName = "Master Volume"
 _musicDisplayName = "Music Volume"
 _sfxDisplayName = "SFX Volume"
-_resolutionControl = NodePath("Background/VBoxContainer2")
-_resolutionDisplayName = "Video"
+_fullscreenButton = NodePath("Background/VBoxContainer2/HBoxContainer2/CheckButton")
+_resolutionsButton = NodePath("Background/VBoxContainer2/HBoxContainer/OptionButton")
 _mainMenuButton = NodePath("Background/HBoxContainer/MainMenu")
 _cancelButton = NodePath("Background/HBoxContainer/Cancel")
 _saveButton = NodePath("Background/HBoxContainer/Save")
@@ -36,13 +36,15 @@ _okButton = NodePath("Background/HBoxContainer/Ok")
 
 [node name="Background" type="NinePatchRect" parent="." unique_id=327987419]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 50.0
-offset_top = 10.0
-offset_right = -50.0
-offset_bottom = -10.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_s5ji3")
@@ -73,9 +75,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = 10.0
-offset_top = -129.0
+offset_top = -110.0
 offset_right = -10.0
-offset_bottom = -35.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -100,37 +102,44 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = 10.0
-offset_top = -32.714996
+offset_top = -20.0
 offset_right = -10.0
-offset_bottom = 61.284973
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_ofyyl")
 _nameLabel = NodePath("Label")
-_resolutionOption = NodePath("OptionButton")
-_fullscreenCheckBox = NodePath("CheckBox")
+_resolutionOption = NodePath("HBoxContainer/OptionButton")
+_fullscreenCheckBox = NodePath("")
 
 [node name="Label" type="Label" parent="Background/VBoxContainer2" unique_id=2046613559]
 layout_mode = 2
 text = "Video"
 horizontal_alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="Background/VBoxContainer2" unique_id=1129952427]
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/VBoxContainer2" unique_id=1195904185]
 layout_mode = 2
-size_flags_horizontal = 4
-selected = 0
-item_count = 3
-popup/item_0/text = "640 x 360"
-popup/item_0/id = 0
-popup/item_1/text = "1280 x 720"
-popup/item_1/id = 1
-popup/item_2/text = "1920 x 1080"
-popup/item_2/id = 2
+alignment = 1
 
-[node name="CheckBox" type="CheckBox" parent="Background/VBoxContainer2" unique_id=997172724]
+[node name="Resolution" type="Label" parent="Background/VBoxContainer2/HBoxContainer" unique_id=1304148376]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resolution"
+
+[node name="OptionButton" type="OptionButton" parent="Background/VBoxContainer2/HBoxContainer" unique_id=1129952427]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Full Screen"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Background/VBoxContainer2" unique_id=510939782]
+layout_mode = 2
+
+[node name="Fullscreen" type="Label" parent="Background/VBoxContainer2/HBoxContainer2" unique_id=284550907]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fullscreen"
+
+[node name="CheckButton" type="CheckButton" parent="Background/VBoxContainer2/HBoxContainer2" unique_id=2001976012]
+layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Background" unique_id=847708264]
 layout_mode = 1

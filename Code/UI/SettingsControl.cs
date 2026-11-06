@@ -1,4 +1,6 @@
 using Godot;
+using System.Collections.Generic;
+
 namespace GA.GameProgramming.UI
 {
     public partial class SettingsControl : Control
@@ -18,8 +20,9 @@ namespace GA.GameProgramming.UI
         [Export] private string _sfxDisplayName = null;
         #endregion Audio
         #region Video
-        [Export] private ResolutionControl _resolutionControl = null;
-        [Export] private string _resolutionDisplayName = null;
+        [Export] private Button _fullscreenButton = null;
+        [Export] private OptionButton _resolutionsButton = null;
+        private Dictionary<int, Resolution> _resolutions = new Dictionary<int, Resolution>();
         #endregion Video
         #region Buttons
         [Export] private Button _mainMenuButton = null;
@@ -27,13 +30,9 @@ namespace GA.GameProgramming.UI
         [Export] private Button _saveButton = null;
         [Export] private Button _okButton = null;
         #endregion Buttons
-        private static readonly Vector2I DesignResolution = new(Config.MinResolutionWidth, Config.MinResolutionHeight);
-        private Vector2I _windowedResolution = DesignResolution;
-        private bool _changingMode = false;
 
         public override void _EnterTree()
         {
-
             if (_masterAudioControl != null)
             {
             _masterAudioControl.VolumeChanged += OnVolumeChanged;
@@ -47,12 +46,14 @@ namespace GA.GameProgramming.UI
                 _sfxAudioControl.VolumeChanged += OnVolumeChanged;
             }
 
-            if (_resolutionControl != null)
+            if (_fullscreenButton != null)
             {
-                _resolutionControl.ResolutionChanged += OnResolutionChanged;
-                _resolutionControl.FullscreenToggled += OnFullscreenToggled;
+                _fullscreenButton.Toggled += OnFullscreenToggled;
             }
-            GetWindow().SizeChanged += OnWindowSizeChanged;
+            if (_resolutionsButton != null)
+            {
+                _resolutionsButton.ItemSelected += OnResolutionSelected;
+            }
 
             if (_mainMenuButton != null)
             {
@@ -79,12 +80,14 @@ namespace GA.GameProgramming.UI
                 _sfxAudioControl.VolumeChanged -= OnVolumeChanged;
             }
 
-            if (_resolutionControl != null)
+            if (_fullscreenButton != null)
             {
-                _resolutionControl.ResolutionChanged -= OnResolutionChanged;
-                _resolutionControl.FullscreenToggled -= OnFullscreenToggled;
+                _fullscreenButton.Toggled -= OnFullscreenToggled;
             }
-            GetWindow().SizeChanged -= OnWindowSizeChanged;
+            if (_resolutionsButton != null)
+            {
+                _resolutionsButton.ItemSelected -= OnResolutionSelected;
+            }
 
             if (_mainMenuButton != null)
             {
@@ -113,14 +116,48 @@ namespace GA.GameProgramming.UI
             {
                 SetUpAudioControl(_sfxAudioControl, _sfxBusName, _sfxDisplayName);
             }
-            if (_resolutionControl != null)
+        
+            InitializeResolutions();
+        }
+
+        private void InitializeResolutions()
+        {
+            Vector2I viewPortSize = GameManager.MinWindowSize;
+            Vector2I screenSize = DisplayServer.ScreenGetSize();
+            int multiplyer = 1;
+            int id = 0;
+            int selected = 0;
+
+            while (GetWidth(viewPortSize, multiplyer) <= screenSize.X
+                && GetHeight(viewPortSize, multiplyer) <= screenSize.Y)
             {
-                Window window = GetWindow();
-                bool isFullscreen = window.Mode == Window.ModeEnum.Fullscreen;
+                Resolution resolution = new Resolution()
+                {
+                    Width = GetWidth(viewPortSize, multiplyer),
+                    Height = GetHeight(viewPortSize, multiplyer),
+                    Multiplyer = multiplyer,
+                };
 
-                _resolutionControl.Setup(_resolutionDisplayName, DesignResolution, window.Size, isFullscreen);
+                _resolutions.Add(id, resolution);
 
-                _windowedResolution = isFullscreen ? DesignResolution : window.Size;
+                _resolutionsButton.AddItem(resolution.ToString(), id);
+                multiplyer++;
+                id++;
+            }
+
+            _resolutionsButton.Select(selected);
+
+            DisplayServer.WindowMode windowMode = DisplayServer.WindowGetMode();
+            _fullscreenButton.ButtonPressed = false; // TODO: When settings data is implemented, read this from the data.
+
+            // Methods in methods bcs they are not neaded after Init, but a little unconventional
+            static int GetWidth(Vector2I viewPortSize, int multiplier)
+            {
+                return viewPortSize.X * multiplier;
+            }
+            static int GetHeight(Vector2I viewPortSize, int multiplier)
+            {
+                return viewPortSize.Y * multiplier;
             }
         }
 
@@ -144,93 +181,54 @@ namespace GA.GameProgramming.UI
             AudioServer.SetBusVolumeDb(audioBusIndex, decibel);
         }
 
-        private async void OnResolutionChanged(Vector2I resolution)
+        private async void OnResolutionSelected(long index)
         {
-            _windowedResolution = resolution;
+            if (_resolutions.TryGetValue((int)index, out Resolution resolution))
+            {
+                Window window = GetWindow();
+                window.Size = (Vector2I) resolution;
+                window.MoveToCenter();
 
-            // DisplayServer.WindowSetSize(resolution);
+                await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
+                window.ContentScaleSize = (Vector2I) resolution;
+                DisplayServer.WindowSetSize((Vector2I) resolution);
 
-            // int screen = DisplayServer.WindowGetCurrentScreen();
-            // Vector2I screenPosition = DisplayServer.ScreenGetPosition(screen);
-            // Vector2I screenSize = DisplayServer.ScreenGetSize(screen);
-            // DisplayServer.WindowSetPosition(screenPosition + (screenSize - resolution) / 2);
-
-            Window window = GetWindow();
-            window.Size = resolution;
-            window.MoveToCenter();
-
-            // Force the content scale to be recalculated for the new window size
-            await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-            window.ContentScaleSize = DesignResolution;
-
-            GD.Print($"{GetWindow().Size}, {DisplayServer.WindowGetSize()}, {DisplayServer.WindowGetPosition()}");
+                GD.Print($"{GetWindow().Size}, {DisplayServer.WindowGetSize()}, {DisplayServer.WindowGetPosition()}");
+            }
+            else
+            {
+                GD.PushError($"Resolution index {index} not found in resolutions dictionary.");
+            }
         }
 
         private async void OnFullscreenToggled(bool fullscreen)
         {
             Window window = GetWindow();
-            _changingMode = true;
 
             if (fullscreen)
             {
-                // window.Mode = Window.ModeEnum.Fullscreen;
-                
-                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-                    
-                // // Force the content scale to be recalculated for the new window state
-                // window.ContentScaleMode = Window.ContentScaleModeEnum.Disabled;
-                // window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
-
-                 // A window as big as the screen causes no resize when entering fullscreen,
-
-                // so the content scale is not recalculated. Shrink it first.
                 int screen = DisplayServer.WindowGetCurrentScreen();
                 if (DisplayServer.WindowGetSize() == DisplayServer.ScreenGetSize(screen))
                 {
-                    // DisplayServer.WindowSetSize(DesignResolution);
                     await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
                     await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
                 }
-
                 window.Mode = Window.ModeEnum.Fullscreen;
             }
             else
             {
                 window.Mode = Window.ModeEnum.Windowed;
-
-                // Let the window finish restoring itself first, then apply our own value
                 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
                 await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
-                OnResolutionChanged(_windowedResolution);
-                // _resolutionControl.SyncToWindow(_windowedResolution);
-            }
-
-            _changingMode = false;
-            // if (fullscreen)
-            // {
-            //     window.Mode = Window.ModeEnum.Fullscreen;
-            //     return;
-            // }
-
-            // window.Mode = Window.ModeEnum.Windowed;
-            // // Get out of fullscreen is executed asynchronously.
-            // // We wait a frame, otherwise the restore overwrites the size we set.
-            // await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
-            // OnResolutionChanged(_resolutionControl.SelectedResolution);
-        }
-
-        private void OnWindowSizeChanged()
-        {
-            if (_changingMode) { return; }
-
-            Window window = GetWindow();
-            if (_resolutionControl != null && window.Mode == Window.ModeEnum.Windowed)
-            {
-                _resolutionControl.SyncToWindow(window.Size);
+                if (_resolutions.TryGetValue(_resolutionsButton.Selected, out Resolution resolution))
+                {
+                    window.Size = (Vector2I) resolution;
+                    window.MoveToCenter();
+                }
             }
         }
+
         public void MainMenu()
         {
             if (!GameManager.Instance.ChangeState(GameStateType.MainMenu))
