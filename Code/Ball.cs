@@ -117,19 +117,30 @@ namespace GA.GameProgramming
             if (collisionInfo != null)
             {
                 GodotObject collider = collisionInfo.GetCollider();
-                GD.Print($"Ball collided: {collider} , collision normal: {collisionInfo.GetNormal()}");
+                // GD.Print($"Ball collided: {collider} , collision normal: {collisionInfo.GetNormal()}");
+
+                EffectType effect = EffectType.None;
+
                 if (collider != null)
                 {
+                    effect = EffectType.Bounce;
+
                     if (collider is Block block)
                     {
+                        effect = EffectType.Hit;
                         block.Hit();
                     }
-
-                    if (collider is DeathZone deathZone)
+                    else if (collider is DeathZone deathZone)
                     {
+                        effect = EffectType.Death;
                         deathZone.Hit();
                         Reset();
                     }
+                }
+
+                if (effect != EffectType.None)
+                {
+                    Level.Current.EffectPlayer.PlayEffect(effect, GlobalPosition);
                 }
 
                 _direction = _direction.Bounce(collisionInfo.GetNormal());

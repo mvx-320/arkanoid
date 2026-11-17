@@ -42,7 +42,6 @@ namespace GA.GameProgramming
 		
 		private SceneTree _sceneTree = null;
 		// Containes all states that are currently loaded.
-		private Stack<GameStateBase> _loadedStates = new Stack<GameStateBase>();
 		// TODO: Use Dictionary instead.
 		private List<GameStateBase> _gameStates = new List<GameStateBase>
 		{
@@ -122,6 +121,9 @@ namespace GA.GameProgramming
 			// TODO: Don't call this when loading the game from a save file.
 			Score = 0;
 			Lives = Config.StartLives;
+
+			// To start the game InGame
+			//ChangeState(GameStateType.InGame, force: true);
 		}
 
 		/// <summary>

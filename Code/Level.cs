@@ -36,6 +36,12 @@ namespace GA.GameProgramming
 			}
 		}
 
+		public EffectPlayer EffectPlayer
+		{
+			get;
+			private set;
+		}
+
         public override void _EnterTree()
         {
             GameManager.Instance.LivesChanged += OnLivesChanged;
@@ -72,6 +78,12 @@ namespace GA.GameProgramming
 			if (_ball == null)
 			{
 				_ball = this.GetNode<Ball>("Ball");
+			}
+
+			EffectPlayer = this.GetNode<EffectPlayer>();
+			if (EffectPlayer == null)
+			{
+				GD.PushError("No EffectPlayer found from the scene.");
 			}
 			
 			InstantiateLevel();

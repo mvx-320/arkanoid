@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://c4thflsymjamw"]
+
+[ext_resource type="Texture2D" uid="uid://dqd5nle14dv15" path="res://Art/32/pixel-explosion.png" id="1_g37ii"]
+[ext_resource type="Material" uid="uid://bbkxwtbflpblh" path="res://Scenes/Particles/Data/HitMaterial.tres" id="2_g37ii"]
+[ext_resource type="AudioStream" uid="uid://bc2g7j0k5dh7g" path="res://Audio/158943__carlmartin__jembay-hit-2-rim.wav" id="3_g37ii"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lqeeq"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 3
+particles_anim_loop = false
+
+[node name="HitParticle" type="GPUParticles2D" unique_id=1607469928]
+material = SubResource("CanvasItemMaterial_lqeeq")
+emitting = false
+texture = ExtResource("1_g37ii")
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("2_g37ii")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=148567919]
+stream = ExtResource("3_g37ii")
+bus = &"SFX"

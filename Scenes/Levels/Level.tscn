@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://dvefnpwe43s2f" path="res://Code/DeathZone.cs" id="7_flwvg"]
 [ext_resource type="Texture2D" uid="uid://ctcm7cou67ome" path="res://Art/32/corner.png" id="8_a1gik"]
 [ext_resource type="Script" uid="uid://bwmhbi60ufh2q" path="res://Code/UI/LevelUi.cs" id="9_d3u4r"]
+[ext_resource type="Script" uid="uid://bfgv3qpa8ptvm" path="res://Code/Level/EffectPlayer.cs" id="10_vkf7a"]
+[ext_resource type="Resource" uid="uid://begtvo673b30p" path="res://Data/EffectMap.tres" id="11_vkf7a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e6s6k"]
 size = Vector2(32, 296)
@@ -128,3 +130,7 @@ offset_right = -37.0
 offset_bottom = 60.0
 grow_horizontal = 0
 text = "Score: YYYYYYY"
+
+[node name="EffectPlayer" type="Node2D" parent="." unique_id=1900294029]
+script = ExtResource("10_vkf7a")
+_effectMap = ExtResource("11_vkf7a")

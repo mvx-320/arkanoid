@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dat6leymof2fx"]
+
+[ext_resource type="Texture2D" uid="uid://dqd5nle14dv15" path="res://Art/32/pixel-explosion.png" id="1_4gwo4"]
+[ext_resource type="Material" uid="uid://b18n6gfxdxsd6" path="res://Scenes/Particles/Data/DeathMaterial.tres" id="2_jaeyl"]
+[ext_resource type="AudioStream" uid="uid://do2pif0k0byhl" path="res://Audio/457756__tissman__fail8.wav" id="3_jaeyl"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_lqeeq"]
+particles_animation = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 3
+particles_anim_loop = false
+
+[node name="DeathParticle" type="GPUParticles2D" unique_id=1607469928]
+material = SubResource("CanvasItemMaterial_lqeeq")
+emitting = false
+texture = ExtResource("1_4gwo4")
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+process_material = ExtResource("2_jaeyl")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=148567919]
+stream = ExtResource("3_jaeyl")
+bus = &"SFX"
