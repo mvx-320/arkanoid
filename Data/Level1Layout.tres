@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="LevelBlockMapping" format=3 uid="uid://b0iv1jkuayi01"]
 
-[ext_resource type="PackedScene" uid="uid://dtnaookpnscg" path="res://Scenes/Levels/BlocksLevel1.tscn" id="1_i46s7"]
-[ext_resource type="Script" uid="uid://d4ghyn240k230" path="res://Code/Level/LevelBlockMapping.cs" id="1_qqwqm"]
+[ext_resource type="PackedScene" uid="uid://1ua81ntgfryb" path="res://Scenes/Levels/BlocksLevel1.tscn" id="1_i46s7"]
+[ext_resource type="Script" uid="uid://cj63n8daydf5o" path="res://Code/Level/LevelBlockMapping.cs" id="1_qqwqm"]
+[ext_resource type="PackedScene" uid="uid://dtnaookpnscg" path="res://Scenes/Levels/BlocksLevel2.tscn" id="2_776b2"]
 
 [resource]
 script = ExtResource("1_qqwqm")
-_blockMapping = Array[PackedScene]([ExtResource("1_i46s7")])
+_blockMapping = Array[PackedScene]([ExtResource("1_i46s7"), ExtResource("2_776b2")])
 metadata/_custom_type_script = "uid://cj63n8daydf5o"
