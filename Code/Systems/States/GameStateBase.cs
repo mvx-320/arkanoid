@@ -20,6 +20,11 @@ namespace GA.GameProgramming.State
         public virtual bool IsAdditive => false;
 
         /// <summary>
+        /// The type of music that should be played when this state is active.
+        /// </summary>
+        public virtual MusicType Music => MusicType.None;
+
+        /// <summary>
         /// The list of states this state can transition to.
         /// </summary>
         private HashSet<GameStateType> _targetStates = new HashSet<GameStateType>();

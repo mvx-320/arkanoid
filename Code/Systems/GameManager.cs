@@ -36,6 +36,11 @@ namespace GA.GameProgramming
 		[Signal] public delegate void LivesChangedEventHandler(int newLives);
 		[Signal] public delegate void RespawnEventHandler();
 		[Signal] public delegate void GameOverEventHandler();
+
+		private AudioStreamPlayer _musicPlayer = null;
+		private MusicMap _musicMap = null;
+		private MusicType _currentMusic = MusicType.None;
+		private readonly Dictionary<MusicType, float> _musicPlaybacks = new();
 		
 		private int _score = 0;
 		private int _lives = Config.StartLives;
@@ -118,12 +123,29 @@ namespace GA.GameProgramming
 
 			Settings = new Settings();
 
+
 			// TODO: Don't call this when loading the game from a save file.
 			Score = 0;
 			Lives = Config.StartLives;
 
+			_musicMap = GD.Load<MusicMap>("res://Data/MusicMap.tres");
+			_musicPlayer = new AudioStreamPlayer
+			{
+				Name = "MusicPlayer",
+				Bus = "Music",
+				ProcessMode = ProcessModeEnum.Always,
+			};
+			AddChild(_musicPlayer);
+			UpdateMusic();
+			_musicPlayer.Finished += OnMusicFinished;
+
 			// To start the game InGame
 			//ChangeState(GameStateType.InGame, force: true);
+		}
+
+		private void OnMusicFinished()
+		{
+			_musicPlayer.Play();
 		}
 
 		/// <summary>
@@ -213,6 +235,8 @@ namespace GA.GameProgramming
 			_nextState.OnEnter(force);
 
 			_nextState = null;
+
+			UpdateMusic();
 		}
 
 		/// <summary>
@@ -234,6 +258,8 @@ namespace GA.GameProgramming
 
 			ActiveState.OnEnter();
 
+			UpdateMusic();
+
 			// Activate the previous state, which is now on top of the stack.
 			return true;
 		}
@@ -252,6 +278,9 @@ namespace GA.GameProgramming
 			// The level scene is added deferred in OnEnter. A deferred call queued
 			// after it runs once the scene (and its HUD) is in the tree.
 			// Callable.From(ResetGameData).CallDeferred();
+
+			// If InGame music should always start from the beginning
+			_musicPlaybacks.Remove(MusicType.InGame); 
 
 			return true;
 		}
@@ -287,6 +316,28 @@ namespace GA.GameProgramming
 				ChangeState(GameStateType.GameOver);
 			}
 
+		}
+
+		private void UpdateMusic()
+		{
+			MusicType wanted = ActiveState?.Music ?? MusicType.None;
+			if (wanted == _currentMusic) return;
+
+			AudioStream stream = _musicMap?.GetStream(wanted);
+			if (stream == null)
+			{
+				GD.PushError($"No music assigned for {wanted}.");
+				return;
+			}
+
+			if (_currentMusic != MusicType.None)
+			{
+				_musicPlaybacks[_currentMusic] = _musicPlayer.GetPlaybackPosition();
+			}
+
+			_currentMusic = wanted;
+			_musicPlayer.Stream = stream;
+			_musicPlayer.Play(_musicPlaybacks.GetValueOrDefault(wanted, 0));
 		}
 	}
 }

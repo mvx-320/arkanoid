@@ -6,6 +6,7 @@ namespace GA.GameProgramming.State
     {
         public override GameStateType StateType => GameStateType.InGame;
         public override string ScenePath => "res://Scenes/Levels/Level.tscn";
+        public override MusicType Music => MusicType.InGame;
         public InGameState() : base()
         {
             AddTargetState(GameStateType.Pause);

@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="MusicMap" format=3 uid="uid://d3pjm05v6kj04"]
+
+[ext_resource type="AudioStream" uid="uid://cp445kkpfw2ee" path="res://Audio/579825__szegvari__electronic-cinematic-music.wav" id="1_17ntr"]
+[ext_resource type="Script" uid="uid://dfvmeon0gal7v" path="res://Code/Level/MusicMap.cs" id="1_aeqn3"]
+[ext_resource type="Script" uid="uid://bq4cgwclatumw" path="res://Code/Level/MusicEntry.cs" id="2_cinpc"]
+[ext_resource type="AudioStream" uid="uid://drbrpxxq4476a" path="res://Audio/387440__frankum__electronic-music-loop-001-accurate-time.wav" id="3_rbtbn"]
+[ext_resource type="AudioStream" uid="uid://cu05g5lrvdmxc" path="res://Audio/822409__astro_denticle__gsus2-orch-hit-sym-fantastique-op.wav" id="4_b723o"]
+
+[sub_resource type="Resource" id="Resource_4npon"]
+script = ExtResource("2_cinpc")
+MusicType = 1
+Stream = ExtResource("1_17ntr")
+metadata/_custom_type_script = "uid://bq4cgwclatumw"
+
+[sub_resource type="Resource" id="Resource_5xdxe"]
+script = ExtResource("2_cinpc")
+MusicType = 2
+Stream = ExtResource("3_rbtbn")
+metadata/_custom_type_script = "uid://bq4cgwclatumw"
+
+[sub_resource type="Resource" id="Resource_qwvym"]
+script = ExtResource("2_cinpc")
+MusicType = 3
+Stream = ExtResource("4_b723o")
+metadata/_custom_type_script = "uid://bq4cgwclatumw"
+
+[resource]
+script = ExtResource("1_aeqn3")
+_entries = Array[Object]([SubResource("Resource_4npon"), SubResource("Resource_5xdxe"), SubResource("Resource_qwvym")])
+metadata/_custom_type_script = "uid://dfvmeon0gal7v"
