@@ -4,6 +4,7 @@ namespace GA.GameProgramming.State
     {
         public override GameStateType StateType => GameStateType.Win;
         public override string ScenePath => "res://Scenes/Menus/Win.tscn";
+        public override MusicType Music => MusicType.Win;
 
         public WinState()
         {

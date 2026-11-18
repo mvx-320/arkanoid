@@ -152,7 +152,11 @@ namespace GA.GameProgramming
 
 		private void OnMusicFinished()
 		{
-			_musicPlayer.Play();
+			if (_musicPlayer.Stream == null) return;
+			if (_musicPlayer.Stream.GetLength() > 20)
+			{
+				_musicPlayer.Play();
+			}
 		}
 
 		/// <summary>
