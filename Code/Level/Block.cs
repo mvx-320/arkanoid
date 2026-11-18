@@ -15,7 +15,7 @@ namespace GA.GameProgramming
 			GD.Print($"Block hit! Score: {_score}");
 		
 			GameManager.Instance.AddScore(_score);
-			EmitSignal(SignalName.BlockDestroyed);
+			EmitSignal(SignalName.BlockDestroyed, this);
 			QueueFree();
 		}
 	}

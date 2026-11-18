@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ckg66jqxuxssk" path="res://Code/UI/GameOverControl.cs" id="1_jmfy1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6s6k"]
-font_size = 30
+font_size = 60
 
 [node name="GameOver" type="Control" unique_id=1964212786 node_paths=PackedStringArray("_retryButton", "_mainMenuButton", "_quitButton")]
 layout_mode = 3
@@ -24,14 +24,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -86.0
-offset_top = -21.0
-offset_right = 86.0
-offset_bottom = 21.0
+offset_left = -130.0
+offset_top = -34.5
+offset_right = 130.0
+offset_bottom = 34.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "GAME OVER"
 label_settings = SubResource("LabelSettings_e6s6k")
+horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1905286095]
 layout_mode = 1

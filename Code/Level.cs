@@ -23,6 +23,7 @@ namespace GA.GameProgramming
 		[Export] private LevelBlockMapping _levelBlockMapping = null;
 		[Export] private int _levelId = 1; // TODO: Move this to GameManager!
 
+		private int _blockCount = 0;
 
 		public Paddle Paddle { get { return _paddle; } }
 		public Ball Ball { get { return _ball; } }
@@ -110,32 +111,46 @@ namespace GA.GameProgramming
 
 		private void InstantiateLevel()
 		{
-			if (_levelBlockMapping != null)
-			{
-				PackedScene levelBlocksScene = _levelBlockMapping.GetLevelBlocks(_levelId);
-				if (levelBlocksScene != null)
-				{
-					Node2D levelBlocksInstance = levelBlocksScene.Instantiate() as Node2D;
-					if (levelBlocksInstance != null)
-					{
-						AddChild(levelBlocksInstance);
-					}
-					else
-					{
-						GD.PrintErr($"Failed to instantiate level blocks for level {_levelId}.");
-					}
-				}
-				else
-				{
-					GD.PrintErr($"No level blocks found for level {_levelId}.");
-				}
-			}
-			else
+			if (_levelBlockMapping == null)
 			{
 				GD.PrintErr("LevelBlockMapping is not assigned.");
+				return;
 			}
+
+			int levelId = GameManager.Instance.CurrentLevelId;
+
+			PackedScene levelBlocksScene = _levelBlockMapping.GetLevelBlocks(levelId);
+			if (levelBlocksScene == null)
+			{
+				GD.PrintErr($"No level blocks found for level {levelId}.");
+				return;
+			}
+
+			Node2D levelBlocksInstance = levelBlocksScene.Instantiate() as Node2D;
+			if (levelBlocksInstance == null)
+			{
+				GD.PrintErr($"Failed to instantiate level blocks for level {_levelId}.");
+				return;
+			}
+			AddChild(levelBlocksInstance);
+		
+			foreach (Block block in levelBlocksInstance.GetNodes<Block>(recursive: true))
+			{
+				_blockCount++;
+				block.BlockDestroyed += OnBlockDestroyed;
+			}
+			GD.Print($"Loaded blocks for level {levelId}, block count: {_blockCount}");
 		}
 
+		private void OnBlockDestroyed(Block block)
+		{
+			_blockCount--;
+			if (_blockCount > 0) return;
+
+			bool isLastLevel = !_levelBlockMapping.HasLevel(GameManager.Instance.CurrentLevelId + 1);
+			GD.Print($"Level {GameManager.Instance.CurrentLevelId}, is {(isLastLevel ? "" : "not")} the last level.");
+			GameManager.Instance.CompleteLevel(isLastLevel);
+		}
 		
 		private void OnGameOver()
 		{

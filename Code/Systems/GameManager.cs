@@ -55,6 +55,7 @@ namespace GA.GameProgramming
 			new SettingsState(),
 			new GameOverState(),
 			new PauseState(),
+			new WinState(),
 		};
 
 		private GameStateBase _nextState = null;
@@ -67,6 +68,12 @@ namespace GA.GameProgramming
 		}
 
 		public Settings Settings { get; private set; } = null;
+		
+		public int CurrentLevelId
+		{
+			get; 
+			set;
+		} = 1;
   
 		public int Score
 		{
@@ -128,7 +135,7 @@ namespace GA.GameProgramming
 			Score = 0;
 			Lives = Config.StartLives;
 
-			_musicMap = GD.Load<MusicMap>("res://Data/MusicMap.tres");
+			_musicMap = ResourceLoader.Load<MusicMap>("res://Data/MusicMap.tres");
 			_musicPlayer = new AudioStreamPlayer
 			{
 				Name = "MusicPlayer",
@@ -272,6 +279,7 @@ namespace GA.GameProgramming
 				GD.PushError("Failed to start a new game.");
 				return false;
 			}
+			CurrentLevelId = 1;
 
 			Score = 0;
 			Lives = Config.StartLives;
@@ -290,6 +298,18 @@ namespace GA.GameProgramming
 		// 	Score = 0;
 		// 	Lives = Config.StartLives;
 		// }
+
+		public void CompleteLevel(bool isLastLevel)
+		{
+			if (isLastLevel)
+			{
+				ChangeState(GameStateType.Win);
+				return;
+			}
+
+			CurrentLevelId++;
+			ChangeState(GameStateType.InGame, force: true);
+		}
 
 		public void AddScore(int scoreToAdd)
 		{
@@ -321,7 +341,7 @@ namespace GA.GameProgramming
 		private void UpdateMusic()
 		{
 			MusicType wanted = ActiveState?.Music ?? MusicType.None;
-			if (wanted == _currentMusic) return;
+			if (wanted == MusicType.None || wanted == _currentMusic) return;
 
 			AudioStream stream = _musicMap?.GetStream(wanted);
 			if (stream == null)

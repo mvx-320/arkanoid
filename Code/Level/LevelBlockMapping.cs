@@ -18,5 +18,9 @@ namespace GA.GameProgramming
 			}
 			return _blockMapping[levelId - 1];
 		}
+		public bool HasLevel(int levelId)
+		{
+			return levelId >= 1 && levelId <= _blockMapping.Count;
+		}
 	}
 }
